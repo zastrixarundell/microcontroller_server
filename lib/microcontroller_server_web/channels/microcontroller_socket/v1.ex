@@ -1,8 +1,12 @@
 defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1 do
   use MicrocontrollerServerWeb, :channel
 
+  require Logger
+
   @impl true
-  def join("microcontroller:v1", payload, socket) do
+  def join("microcontroller:v1:" <> _mc_id, payload, socket) do
+    Logger.debug("Payload during MC join on V1: #{payload}")
+
     if authorized?(payload) do
       {:ok, socket}
     else
@@ -26,7 +30,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1 do
   end
 
   # Add authorization logic here as required.
-  defp authorized?(_payload) do
+  def authorized?(_payload) do
     true
   end
 end

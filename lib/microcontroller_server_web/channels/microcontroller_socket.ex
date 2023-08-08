@@ -19,7 +19,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   # See the [`Channels guide`](https://hexdocs.pm/phoenix/channels.html)
   # for further details.
 
-  channel "microcontroller:v1", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
+  channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

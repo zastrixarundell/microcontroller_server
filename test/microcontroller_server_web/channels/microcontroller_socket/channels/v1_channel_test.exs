@@ -1,11 +1,17 @@
 defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1ChannelTest do
   use MicrocontrollerServerWeb.ChannelCase
 
+  # TODO: Add factory for microcontrollers and initial readings.
+
   setup do
     {:ok, _, socket} =
-      MicrocontrollerServerWeb.UserSocket
-      |> socket("user_id", %{some: :assign})
-      |> subscribe_and_join(MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1Channel, "v1:lobby")
+      MicrocontrollerServerWeb.MicrocontrollerSocket
+      |> socket()
+      |> subscribe_and_join(
+        MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1,
+        "microcontroller:v1:#{System.unique_integer([:positive])}",
+        %{api_token: 123}
+      )
 
     %{socket: socket}
   end
