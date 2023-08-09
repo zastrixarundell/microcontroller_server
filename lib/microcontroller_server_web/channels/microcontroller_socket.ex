@@ -79,10 +79,10 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
   ### Examples
 
-      iex> authenticate_token(123)
-      {:ok, 123, 412, 10}
+      iex> authenticate_token("API_TOKEN_MC_VZGkp2vvJJjHj3qZ")
+      {:ok, 1, 2, 3}
 
-      iex> authenticate_token(456)
+      iex> authenticate_token("API_TOKEN_MC_INVALIDTOKENTEST")
       {:error, :failed_authentication}
   """
   @spec authenticate_token(any) :: {:ok, integer(), integer(), integer()} | {:error, :failed_authentication}
@@ -96,8 +96,6 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
       {:error, _} ->
         {:error, :failed_authentication}
     end
-
-    {:ok, 123, 412, 10}
   end
 
   # Join the unique channel only for the select location. All of the clients will get the message

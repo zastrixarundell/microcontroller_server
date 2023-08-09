@@ -5,6 +5,21 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
   alias MicrocontrollerServerWeb.MicrocontrollerSocket, as: Socket
 
+  import Mox
+
+  setup do
+    expect(MicrocontrollerAuthMock, :authenticate_token, fn token ->
+      case token do
+        "API_TOKEN_MC_INVALIDTOKENTEST" ->
+          {:error, :authentication_failed}
+        _ ->
+          {:ok, %{user_id: 1, location_id: 2, controller_id: 3}}
+      end
+    end)
+
+    :ok
+  end
+
   describe "The microcontroller" do
     test "connects to socket when the API token is valid" do
       {:ok, _socket} = connect(Socket, %{api_token: "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"})
