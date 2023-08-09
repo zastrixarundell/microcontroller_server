@@ -87,15 +87,16 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   """
   @spec authenticate_token(any) :: {:ok, integer(), integer(), integer()} | {:error, :failed_authentication}
   def authenticate_token(api_token) do
-    authentication_service =
-      Application.get_env(:microcontroller_server, :microcontroller_auth_server, AuthServices.MicrocontrollerAuthService)
-
-    case authentication_service.authenticate_token(api_token) do
+    case authentication_service().authenticate_token(api_token) do
       {:ok, data} ->
         {:ok, data.user_id, data.location_id, data.controller_id}
       {:error, _} ->
         {:error, :failed_authentication}
     end
+  end
+
+  defp authentication_service() do
+    Application.get_env(:microcontroller_server, :microcontroller_auth_server, AuthServices.MicrocontrollerAuthService)
   end
 
   # Join the unique channel only for the select location. All of the clients will get the message
