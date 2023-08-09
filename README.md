@@ -81,7 +81,7 @@ If the application is ran with asdf, then either `podman` or `docker` need to be
 
 ### Environment variables
 
-|Variable name|Type|Example|Definition|optional|
+|Variable name|Type|Example|Definition|Optional|
 |:-----|:-----|:-----|:-----|:-----|
 |MICROCONTROLLER_AUTH_SERVER|String|http://localhost:5000|URL of the auth server.|No
 
