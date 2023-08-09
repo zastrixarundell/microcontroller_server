@@ -3,6 +3,8 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
   channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
 
+  alias MicrocontrollerServer.Services.AuthServices
+
   @impl true
   def connect(params, socket, _connect_info) do
     potential_token = params |> Map.get("api_token")
@@ -84,7 +86,17 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
       {:error, :failed_authentication}
   """
   @spec authenticate_token(any) :: {:ok, integer(), integer(), integer()} | {:error, :failed_authentication}
-  def authenticate_token(_api_token) do
+  def authenticate_token(api_token) do
+    authentication_service =
+      Application.get_env(:microcontroller_server, :microcontroller_auth_server, AuthServices.MicrocontrollerAuthService)
+
+    case authentication_service.authenticate_token(api_token) do
+      {:ok, data} ->
+        {:ok, data.user_id, data.location_id, data.controller_id}
+      {:error, _} ->
+        {:error, :failed_authentication}
+    end
+
     {:ok, 123, 412, 10}
   end
 

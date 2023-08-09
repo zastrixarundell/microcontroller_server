@@ -13,6 +13,12 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
     test "does not connect to the socket if the API token format is invalid" do
       {:error, "The token is missing or format is invalid."} = connect(Socket, %{api_token: "1"})
     end
+
+    test "does not connect to the socket if the API token is invalid" do
+      error_message = "The token is invalid. Please renew your subscription."
+
+      {:error, error_message} = connect(Socket, %{api_token: "API_TOKEN_MC_INVALIDTOKENTEST"})
+    end
   end
 
 end

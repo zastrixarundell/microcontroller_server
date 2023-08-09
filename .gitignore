@@ -25,3 +25,5 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 microcontroller_server-*.tar
 
+# Ignore the development files from VScode
+.elixir_ls
