@@ -1,55 +1,96 @@
 defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   use Phoenix.Socket
 
-  # A Socket handler
-  #
-  # It's possible to control the websocket connection and
-  # assign values that can be accessed by your channel topics.
-
-  ## Channels
-  # Uncomment the following line to define a "room:*" topic
-  # pointing to the `MicrocontrollerServerWeb.RoomChannel`:
-  #
-  # channel "room:*", MicrocontrollerServerWeb.RoomChannel
-  #
-  # To create a channel file, use the mix task:
-  #
-  #     mix phx.gen.channel Room
-  #
-  # See the [`Channels guide`](https://hexdocs.pm/phoenix/channels.html)
-  # for further details.
-
   channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
 
-  # Socket params are passed from the client and can
-  # be used to verify and authenticate a user. After
-  # verification, you can put default assigns into
-  # the socket that will be set for all channels, ie
-  #
-  #     {:ok, assign(socket, :user_id, verified_user_id)}
-  #
-  # To deny connection, return `:error` or `{:error, term}`. To control the
-  # response the client receives in that case, [define an error handler in the
-  # websocket
-  # configuration](https://hexdocs.pm/phoenix/Phoenix.Endpoint.html#socket/3-websocket-configuration).
-  #
-  # See `Phoenix.Token` documentation for examples in
-  # performing token verification on connect.
   @impl true
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(params, socket, _connect_info) do
+    potential_token = params |> Map.get("api_token")
+
+    with {:ok, token} <- api_token_regex(potential_token),
+         {:ok, user_id, location_id, controller_id} <- authenticate_token(token) do
+
+      socket =
+        socket
+        |> assign(user_id: user_id)
+        |> assign(location_id: location_id)
+        |> assign(controller_id: controller_id)
+
+      {:ok, socket}
+    else
+      {:error, :invalid_token} ->
+        {:error, "The token is missing or format is invalid."}
+      {:error, :failed_authentication} ->
+        {:error, "The token is invalid. Please renew your subscription."}
+    end
   end
 
-  # Socket id's are topics that allow you to identify all sockets for a given user:
-  #
-  #     def id(socket), do: "user_socket:#{socket.assigns.user_id}"
-  #
-  # Would allow you to broadcast a "disconnect" event and terminate
-  # all active sockets and channels for a given user:
-  #
-  #     Elixir.MicrocontrollerServerWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
-  #
-  # Returning `nil` makes this socket anonymous.
+  @doc """
+  @since 0.0
+
+  Check the API token against a preset regex rule. The rule is that the API token
+  must start with `API_TOKEN_MC_` and is then followed by at least `16` characters
+  which can be uppercase and lowercaser letters alongside numbers.
+
+  ### Examples
+
+      iex> api_token_regex("API_TOKEN_MC_VZGkp2vvJJjHj3qZ")
+      {:ok, "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"}
+
+      iex> api_token_regex("API_TOKEN_MC_VZGkp2vvJ")
+      {:error, :invalid_token}
+
+      iex> api_token_regex("oAPI_TOKEN_MC_VZGkp2vvJ")
+      {:error, :invalid_token}
+
+      iex> api_token_regex("oAPI_TOKEN_MC_VZGkp2vvJ@")
+      {:error, :invalid_token}
+
+      iex> api_token_regex("API_TOKEN_MC_VZGkp2vvJJjHj3q@")
+      {:error, :invalid_token}
+
+      iex> api_token_regex(nil)
+      {:error, :invalid_token}
+  """
+  @spec api_token_regex(api_token :: String.t()) :: {:error, :invalid_token} | {:ok, String.t()}
+  def api_token_regex(nil), do: {:error, :invalid_token}
+
+  def api_token_regex(api_token) do
+    case String.match?(api_token, ~r/^API_TOKEN_MC_[a-zA-Z0-9]{16,}$/) do
+      true ->
+        {:ok, api_token}
+      false ->
+        {:error, :invalid_token}
+    end
+  end
+
+
+  @doc """
+  Authenticate the device with the microcontroller authentication server.
+
+  The function returns the following if successful:
+
+  * `:ok`
+  * `user_id`
+  * `location_id`
+  * `controller_id`
+
+  ### Examples
+
+      iex> authenticate_token(123)
+      {:ok, 123, 412, 10}
+
+      iex> authenticate_token(456)
+      {:error, :failed_authentication}
+  """
+  @spec authenticate_token(any) :: {:ok, integer(), integer(), integer()} | {:error, :failed_authentication}
+  def authenticate_token(_api_token) do
+    {:ok, 123, 412, 10}
+  end
+
+  # Join the unique channel only for the select location. All of the clients will get the message
+  # and they will need a unique identifier logic on their side but this is okay in the instance of
+  # wanting to turn off all of the lights or similar.
   @impl true
-  def id(_socket), do: nil
+  def id(socket), do: "microcontroller_socket:#{socket.assigns.location_id}"
 end

@@ -1,4 +1,4 @@
-defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1ChannelTest do
+defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1Test do
   use MicrocontrollerServerWeb.ChannelCase
 
   # TODO: Add factory for microcontrollers and initial readings.
