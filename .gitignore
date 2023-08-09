@@ -27,3 +27,6 @@ microcontroller_server-*.tar
 
 # Ignore the development files from VScode
 .elixir_ls
+
+# Ignore the system variables when using asdf
+.asdf-vars

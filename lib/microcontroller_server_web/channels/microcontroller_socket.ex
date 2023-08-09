@@ -7,7 +7,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
   @impl true
   def connect(params, socket, _connect_info) do
-    potential_token = params |> Map.get("api_token")
+    potential_token = params |> Map.get("token")
 
     with {:ok, token} <- api_token_regex(potential_token),
          {:ok, user_id, location_id, controller_id} <- authenticate_token(token) do

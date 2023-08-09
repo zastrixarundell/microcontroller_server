@@ -44,7 +44,8 @@ defmodule MicrocontrollerServer.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:hammox, "~> 0.7", only: :test}
+      {:hammox, "~> 0.7", only: :test},
+      {:httpoison, "~> 2.0"}
     ]
   end
 

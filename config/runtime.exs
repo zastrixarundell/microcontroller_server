@@ -20,6 +20,11 @@ if System.get_env("PHX_SERVER") do
   config :microcontroller_server, MicrocontrollerServerWeb.Endpoint, server: true
 end
 
+config :microcontroller_server, MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService,
+  server: System.get_env("MICROCONTROLLER_AUTH_SERVER") || raise """
+              environment variable MICROCONTROLLER_AUTH_SERVER is missing.
+            """
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
