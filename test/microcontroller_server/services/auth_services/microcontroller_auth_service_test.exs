@@ -18,9 +18,8 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
 
       case token do
         "INVALID_TOKEN" ->
-          {
-            :error,
-            %Error{}
+          %Response{
+            status_code: 401
           }
         _ ->
         {
