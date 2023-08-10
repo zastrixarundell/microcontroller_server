@@ -3,7 +3,7 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
 
   import Mox
 
-  alias HTTPoison.{Response, Error}
+  alias HTTPoison.Response
 
   doctest MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, import: true
 
