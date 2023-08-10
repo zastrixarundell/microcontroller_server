@@ -11,9 +11,13 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
   alias MicrocontrollerServer.Services.AuthServices
 
+  require Logger
+
   @impl true
   def connect(params, socket, _connect_info) do
     potential_token = params |> Map.get("token")
+
+    Logger.debug("Trying connection for API token: #{potential_token}")
 
     with {:ok, token} <- api_token_regex(potential_token),
          {:ok, user_id, location_id, controller_id} <- authenticate_token(token) do
@@ -24,11 +28,18 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
         |> assign(location_id: location_id)
         |> assign(controller_id: controller_id)
 
+      Logger.debug(
+        "Accepted connection for API token: #{potential_token} and for assigns: #{inspect(socket.assigns)}"
+      )
+
       {:ok, socket}
     else
       {:error, :invalid_token} ->
+        Logger.debug("Token is invalid or missing.")
         {:error, "The token is missing or format is invalid."}
+
       {:error, :failed_authentication} ->
+        Logger.debug("Token is invalid according to the AUTH server.")
         {:error, "The token is invalid. Please renew your subscription."}
     end
   end

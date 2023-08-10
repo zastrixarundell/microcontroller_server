@@ -23,18 +23,7 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
   """
   @spec authenticate_token(token :: binary()) :: {:ok, %{user_id: integer(), location_id: integer(), contrroller_id: integer()}} | {:error, :authentication_failed}
   def authenticate_token(token) do
-    body_params = %{
-      token: token
-    }
-
-    requet_url =
-      auth_server_details()
-      |> Keyword.get(:server)
-      |> URI.parse()
-      |> Map.put(:query, URI.encode_query(body_params))
-      |> URI.to_string()
-
-    with {:ok, %Response{status_code: 200} = response} <- auth_client().get(requet_url),
+    with {:ok, %Response{status_code: 200} = response} <- auth_client().get("/api/v1/auth", %{token: token}),
          {:ok, %{"user_id" => uid, "location_id" => lid, "controller_id" => cid}} <- decode_body(response) do
       {:ok, %{user_id: uid, location_id: lid, controller_id: cid}}
     else
@@ -48,10 +37,6 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
     response
     |> Map.get(:body, "{}")
     |> Jason.decode()
-  end
-
-  defp auth_server_details() do
-    Application.get_env(:microcontroller_server, MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, %{})
   end
 
   defp auth_client() do

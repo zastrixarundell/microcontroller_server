@@ -9,5 +9,5 @@ defmodule MicrocourlntrollerServer.Services.AuthServices.Clients.Microcontroller
   @doc """
   Wrapper for HTTPoison get. It's written this way to be able to be mocked in tests.
   """
-  @callback get(String.t()) :: {:ok, Request.t()} | {:error, Error.t()}
+  @callback get(path :: String.t(), body_params :: %{}) :: {:ok, %Request{}} | {:error, %Error{}}
 end
