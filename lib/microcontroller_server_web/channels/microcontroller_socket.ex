@@ -1,6 +1,12 @@
 defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   use Phoenix.Socket
 
+  @moduledoc """
+  Socket for microcontrollers trying to authenticate to the server. This file handles the incoming
+  connections, checks whether the API token which they are sending are valid and in case they are
+  it allows the request to be handled by the correct API version of the channel.
+  """
+
   channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
 
   alias MicrocontrollerServer.Services.AuthServices
@@ -39,8 +45,6 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   end
 
   @doc """
-  @since 0.0
-
   Check the API token against a preset regex rule. The rule is that the API token
   must start with `API_TOKEN_MC_` and is then followed by at least `16` characters
   which can be uppercase and lowercaser letters alongside numbers.

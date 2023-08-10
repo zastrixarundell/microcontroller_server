@@ -1,6 +1,10 @@
 defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerClient do
   @behaviour MicrocourlntrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour
 
+  @moduledoc """
+  Actual implementation of the HTTPoison request wrappers.
+  """
+
   def get(path, body_params) do
     auth_server_details()
     |> Keyword.get(:server)
