@@ -8,7 +8,7 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
   doctest MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, import: true
 
   setup do
-    expect(AuthServiceMicrocontrollerMock, :get, fn path, body_params ->
+    expect(AuthServiceMicrocontrollerMock, :get, fn _path, body_params ->
       case body_params.token do
         "INVALID_TOKEN" ->
           %Response{

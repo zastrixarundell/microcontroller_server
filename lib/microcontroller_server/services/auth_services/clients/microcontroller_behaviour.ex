@@ -1,4 +1,4 @@
-defmodule MicrocourlntrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour do
+defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour do
   alias HTTPoison.{Request, Error}
 
   @moduledoc """
