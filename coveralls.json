@@ -1,0 +1,14 @@
+{
+    "skip_files": [
+        "lib/microcontroller_server/application.ex",
+        "lib/microcontroller_server.ex",
+        "lib/microcontroller_server/mailer.ex",
+        "lib/microcontroller_server/repo.ex",
+        "lib/microcontroller_server/services/auth_services/microcontroller_auth_behaviour.ex",
+        "lib/microcontroller_server/services/auth_services/clients/microcontroller_behaviour.ex",
+        "lib/microcontroller_server/services/auth_services/clients/microcontroller_client.ex",
+        "test/support/channel_case.ex",
+        "test/support/data_case.ex",
+        "test/support/conn_case.ex"
+    ]
+}
