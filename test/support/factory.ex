@@ -7,12 +7,11 @@ defmodule MicrocontrollerServer.Factory do
 
   def device_factory(options \\ %{}) do
     %Device{
-      user_id: Map.get(options, :user_id, sequence(:user_id, &passthrough_argument/1, start_at: 1)),
-      location_id: Map.get(options, :location_id, sequence(:location_id, &passthrough_argument/1, start_at: 1))
+      user_id: Map.get(options, :user_id, sequence(:user_id, &(&1), start_at: 1)),
+      location_id: Map.get(options, :location_id, sequence(:location_id, &(&1), start_at: 1)),
+      controller_id: Map.get(options, :controller_id, sequence(:controller_id, &(&1), start_at: 1))
     }
   end
-
-  defp passthrough_argument(arg), do: arg
 
   # Reading
 

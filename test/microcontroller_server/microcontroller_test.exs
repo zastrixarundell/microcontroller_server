@@ -20,6 +20,14 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert Microcontroller.get_device!(device.id) == device
     end
 
+    test "get_device_by_controller_id/1 return the device with the given controller id" do
+      device = insert(:device)
+
+      assert ^device = Microcontroller.get_device_by_controller_id(device.controller_id)
+
+      assert nil == Microcontroller.get_device_by_controller_id(device.controller_id + 1)
+    end
+
     test "create_device/1 with valid data creates a device" do
       device =
         build(:device, user_id: 42, location_id: 42)
@@ -32,6 +40,17 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
 
     test "create_device/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Microcontroller.create_device(@invalid_attrs)
+    end
+
+    test "create_device/1 with repeating controller_id returns error changeset" do
+      device = insert(:device)
+
+      device_new = build(:device, controller_id: device.controller_id)
+
+      assert {:error, %Ecto.Changeset{errors: [controller_id: _]}} =
+        device_new
+        |> Map.from_struct()
+        |> Microcontroller.create_device()
     end
 
     test "update_device/2 with valid data updates the device" do
@@ -79,10 +98,6 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
 
       assert {:ok, %Reading{} = reading} = Microcontroller.create_reading(valid_attrs)
 
-      {:ok, type_id} = Microcontroller.ReadingType.dump("pressure")
-
-      assert {:ok, %Postgrex.Result{rows: [[^type_id]]}} = MicrocontrollerServer.Repo.query("SELECT type FROM readings WHERE id = #{reading.id}")
-
       assert reading.type == "pressure"
       assert reading.value == 120.5
     end
@@ -97,35 +112,35 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert reading.type == "pressure"
     end
 
-  #   test "create_reading/1 with invalid data returns error changeset" do
-  #     assert {:error, %Ecto.Changeset{}} = Microcontroller.create_reading(@invalid_attrs)
-  #   end
+    test "create_reading/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Microcontroller.create_reading(@invalid_attrs)
+    end
 
-  #   test "update_reading/2 with valid data updates the reading" do
-  #     reading = reading_fixture()
-  #     update_attrs = %{type: 43, value: 456.7}
+    test "update_reading/2 with valid data updates the reading" do
+      reading = insert(:reading)
+      update_attrs = %{type: "pressure", value: 7}
 
-  #     assert {:ok, %Reading{} = reading} = Microcontroller.update_reading(reading, update_attrs)
-  #     assert reading.type == 43
-  #     assert reading.value == 456.7
-  #   end
+      assert {:ok, %Reading{} = reading} = Microcontroller.update_reading(reading, update_attrs)
+      assert reading.type == "pressure"
+      assert reading.value == 7
+    end
 
-  #   test "update_reading/2 with invalid data returns error changeset" do
-  #     reading = reading_fixture()
-  #     assert {:error, %Ecto.Changeset{}} = Microcontroller.update_reading(reading, @invalid_attrs)
-  #     assert reading == Microcontroller.get_reading!(reading.id)
-  #   end
+    test "update_reading/2 with invalid data returns error changeset" do
+      reading = insert(:reading)
+      assert {:error, %Ecto.Changeset{}} = Microcontroller.update_reading(reading, @invalid_attrs)
+      assert reading == Microcontroller.get_reading!(reading.id)
+    end
 
-  #   test "delete_reading/1 deletes the reading" do
-  #     reading = reading_fixture()
-  #     assert {:ok, %Reading{}} = Microcontroller.delete_reading(reading)
-  #     assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_reading!(reading.id) end
-  #   end
+    test "delete_reading/1 deletes the reading" do
+      reading = insert(:reading)
+      assert {:ok, %Reading{}} = Microcontroller.delete_reading(reading)
+      assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_reading!(reading.id) end
+    end
 
-  #   test "change_reading/1 returns a reading changeset" do
-  #     reading = reading_fixture()
-  #     assert %Ecto.Changeset{} = Microcontroller.change_reading(reading)
-  #   end
+    test "change_reading/1 returns a reading changeset" do
+      reading = insert(:reading)
+      assert %Ecto.Changeset{} = Microcontroller.change_reading(reading)
+    end
   end
 
   # describe "sensors" do

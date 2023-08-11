@@ -38,6 +38,23 @@ defmodule MicrocontrollerServer.Microcontroller do
   def get_device!(id), do: Repo.get!(Device, id)
 
   @doc """
+  Gets an existing device by controller_id.
+
+  ## Examples
+
+      iex> get_device_by_controller(2)
+      %Device{controller_id: 2}
+
+      iex> create_device(bad_value)
+      nil
+  """
+  def get_device_by_controller_id(controller_id) do
+    Device
+    |> where(controller_id: ^controller_id)
+    |> Repo.one()
+  end
+
+  @doc """
   Creates a device.
 
   ## Examples
