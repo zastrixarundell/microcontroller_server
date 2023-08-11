@@ -25,20 +25,20 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
     test "connects to socket when the API token is valid" do
       device = insert(:device, user_id: 1, location_id: 2, controller_id: 3)
 
-      {:ok, socket} = connect(Socket, %{token: "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"})
+      {:ok, socket} = connect(Socket, %{}, connect_info: %{x_headers: [{"x-api-key", "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"}]})
 
       assert socket.id, "microcontroller_socket:2"
       assert %{device: device} == socket.assigns
     end
 
     test "does not connect to the socket if the API token format is invalid" do
-      {:error, "The token is missing or format is invalid."} = connect(Socket, %{api_token: "1"})
+      {:error, "The token is missing or format is invalid."} = connect(Socket, %{}, connect_info: %{x_headers: [{"x-api-key", "1"}]})
     end
 
     test "does not connect to the socket if the API token is invalid" do
       error_message = "The token is invalid. Please renew your subscription."
 
-      {:error, ^error_message} = connect(Socket, %{token: "API_TOKEN_MC_INVALIDTOKENTEST"})
+      {:error, ^error_message} = connect(Socket, %{}, connect_info: %{x_headers: [{"x-api-key", "API_TOKEN_MC_INVALIDTOKENTEST"}]})
     end
   end
 

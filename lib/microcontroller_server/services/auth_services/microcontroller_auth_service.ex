@@ -5,7 +5,9 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
   Service file for perfoming requests to the microcontroller authentication server.
   """
 
-  alias HTTPoison.Response
+  require Logger
+
+  alias HTTPoison.{Error, Response}
 
   @doc """
   Authenticate the token against the authentication servers. If the token is okay
@@ -29,6 +31,9 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
          {:ok, %{"user_id" => uid, "location_id" => lid, "controller_id" => cid}} <- decode_body(response) do
       {:ok, %{user_id: uid, location_id: lid, controller_id: cid}}
     else
+      {:error, %Error{}} ->
+        Logger.critical("Could not access the microcontroller authentcation server!")
+        {:error, :authentication_failed}
       _ ->
         {:error, :authentication_failed}
     end

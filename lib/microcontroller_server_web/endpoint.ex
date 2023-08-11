@@ -16,7 +16,9 @@ defmodule MicrocontrollerServerWeb.Endpoint do
   # Developer defined sockets
 
   socket "/socket", MicrocontrollerServerWeb.MicrocontrollerSocket,
-    websocket: true,
+    websocket: [
+      connect_info: [:x_headers]
+    ],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.

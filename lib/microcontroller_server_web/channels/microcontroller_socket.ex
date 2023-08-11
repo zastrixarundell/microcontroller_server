@@ -14,32 +14,45 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   require Logger
 
   @impl true
-  def connect(params, socket, _connect_info) do
-    potential_token = params |> Map.get("token")
+  def connect(_params, socket, connect_info) do
+    token =
+      connect_info
+      |> Map.get(:x_headers, [])
+      |> Enum.find_value(&extract_api_key/1)
 
-    Logger.debug("Trying connection for API token: #{potential_token}")
+    Logger.info("Receiving connection request for token: #{token}")
 
-    with {:ok, token} <- api_token_regex(potential_token),
+    with {:ok, token} <- api_token_regex(token),
          {:ok, user_id, location_id, controller_id} <- authenticate_token(token),
          {:ok, device} <- Microcontroller.get_device_by_fields(controller_id, user_id, location_id) do
 
-      socket =
-        socket
-        |> assign(device: device)
-
-      Logger.debug("Accepted connection for API token: #{potential_token} and for assigns: #{inspect(socket.assigns)}")
-
-      {:ok, socket}
+      {:ok, assign(socket, device: device)}
     else
       {:error, :invalid_token} ->
-        Logger.debug("Token is invalid or missing.")
+        Logger.info("Token '#{token}' failed the Regex check.")
         {:error, "The token is missing or format is invalid."}
 
       {:error, :failed_authentication} ->
-        Logger.debug("Token is invalid according to the AUTH server.")
+        Logger.info("Token '#{token}' is invalid according to the auth server.")
         {:error, "The token is invalid. Please renew your subscription."}
     end
   end
+
+  @doc """
+  Retrieve the `x-api-key` header from a list of x_headers. These headers are present in
+  the `connect_info` variable in the connect/3 function call.
+
+  ## Examples
+
+      iex> extract_api_key({"x-api-key", "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"})
+      "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"
+
+      iex> extract_api_key({"x-api-key1", "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"})
+      nil
+  """
+  @spec extract_api_key(any() | {String.t(), String.t()}) :: String.t() | nil
+  def extract_api_key({"x-api-key", key}) when is_binary(key), do: key
+  def extract_api_key(_), do: nil
 
   @doc """
   Check the API token against a preset regex rule. The rule is that the API token
