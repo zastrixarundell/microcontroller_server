@@ -28,9 +28,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
         |> assign(location_id: location_id)
         |> assign(controller_id: controller_id)
 
-      Logger.debug(
-        "Accepted connection for API token: #{potential_token} and for assigns: #{inspect(socket.assigns)}"
-      )
+      Logger.debug("Accepted connection for API token: #{potential_token} and for assigns: #{inspect(socket.assigns)}")
 
       {:ok, socket}
     else

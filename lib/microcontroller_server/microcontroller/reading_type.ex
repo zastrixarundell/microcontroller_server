@@ -32,15 +32,20 @@ defmodule MicrocontrollerServer.Microcontroller.ReadingType do
 
   def cast(_), do: :error
 
-  @spec load(any) :: {:ok, any}
   def load(value) when is_integer(value) do
     {:ok, Enum.find(@map, fn {_k, v} -> v == value end) |> elem(0)}
   end
 
-  def load(value) when is_binary(value), do: value
+  def load(value) when is_binary(value) do
+    if Map.has_key?(@map, value) do
+      {:ok, value}
+    else
+      :error
+    end
+  end
 
   @spec dump(any) :: :error | {:ok, integer()}
-  def dump(string) when is_binary(string), do: {:ok, Map.fetch!(@map, string)}
+  def dump(string) when is_binary(string), do: Map.fetch(@map, string)
 
   def dump(value) when is_integer(value), do: {:ok, value}
 

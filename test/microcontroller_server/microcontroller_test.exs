@@ -84,8 +84,11 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
     @invalid_attrs %{type: nil, value: nil}
 
     test "list_readings/0 returns all readings" do
-      reading = insert(:reading)
-      assert Microcontroller.list_readings() == [reading]
+      readings = Enum.map(0..5, fn _i -> insert(:reading) end)
+
+      readings = readings ++ [insert(:reading, value: 10, type: "pressure")]
+
+      assert Microcontroller.list_readings() == readings
     end
 
     test "get_reading!/1 returns the reading with given id" do
@@ -103,13 +106,25 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
     end
 
     test "have correct enumaration of types" do
+      alias Microcontroller.ReadingType
+
       reading = insert(:reading, type: "pressure")
 
-      {:ok, type_id} = Microcontroller.ReadingType.dump("pressure")
+      {:ok, type_id} = ReadingType.dump("pressure")
 
       assert {:ok, %Postgrex.Result{rows: [[^type_id]]}} = MicrocontrollerServer.Repo.query("SELECT type FROM readings WHERE id = #{reading.id}")
 
       assert reading.type == "pressure"
+
+      assert {:ok, "pressure"} = ReadingType.load(type_id)
+      assert {:ok, "pressure"} = ReadingType.cast(type_id)
+      assert {:ok, "pressure"} = ReadingType.load("pressure")
+
+      assert :error == ReadingType.cast(:error)
+
+      assert {:ok, ^type_id} = ReadingType.dump("pressure")
+      assert {:ok, ^type_id} = ReadingType.dump(type_id)
+      assert :error == ReadingType.dump(:error)
     end
 
     test "create_reading/1 with invalid data returns error changeset" do

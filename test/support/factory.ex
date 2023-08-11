@@ -23,7 +23,7 @@ defmodule MicrocontrollerServer.Factory do
     value = fetch_reading(options |> Map.get(:value), type)
 
     %Reading{
-      type: Map.get(options, :type, sequence(:reading_type, ~w(temperature pressure illuminance humidity))),
+      type: type,
       value: value,
       sensor: Map.get(options, :sensor, build(:sensor, Map.take(options, [:device])))
     }
@@ -47,8 +47,6 @@ defmodule MicrocontrollerServer.Factory do
   defp raw_reading(min, max) when is_number(min) and is_number(max) do
     :rand.uniform() * (max - min) + min
   end
-
-  defp raw_reading(_, _), do: :error
 
   # Sensor
 
