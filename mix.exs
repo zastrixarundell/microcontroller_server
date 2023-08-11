@@ -9,7 +9,15 @@ defmodule MicrocontrollerServer.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        cover: :test,
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -48,7 +56,8 @@ defmodule MicrocontrollerServer.MixProject do
       {:hammox, "~> 0.7", only: :test},
       {:httpoison, "~> 2.0"},
       {:ex_machina, "~> 2.7.0", unless: :prod},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
@@ -64,6 +73,7 @@ defmodule MicrocontrollerServer.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      cover: ["coveralls.html"],
       lint: ["credo --strict"]
     ]
   end
