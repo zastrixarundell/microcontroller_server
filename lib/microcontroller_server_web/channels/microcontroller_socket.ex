@@ -26,7 +26,13 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
          {:ok, user_id, location_id, controller_id} <- authenticate_token(token),
          {:ok, device} <- Microcontroller.get_device_by_fields(controller_id, user_id, location_id) do
 
-      {:ok, assign(socket, device: device)}
+      Logger.info("Microcontroller connection accepted.")
+
+      Logger.debug("Requesting to send metadata information for controller: #{controller_id}")
+
+      # TODO: figure it out.
+
+      {:ok, assign(socket, :device, device)}
     else
       {:error, :invalid_token} ->
         Logger.info("Token '#{token}' failed the Regex check.")
@@ -127,5 +133,5 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   # and they will need a unique identifier logic on their side but this is okay in the instance of
   # wanting to turn off all of the lights or similar.
   @impl true
-  def id(socket), do: "microcontroller:location:#{socket.assigns.device.controller_id}"
+  def id(socket), do: "microcontroller:#{socket.assigns.device.controller_id}"
 end
