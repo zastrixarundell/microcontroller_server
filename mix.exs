@@ -25,6 +25,7 @@ defmodule MicrocontrollerServer.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -46,7 +47,7 @@ defmodule MicrocontrollerServer.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:hammox, "~> 0.7", only: :test},
       {:httpoison, "~> 2.0"},
-      {:ex_machina, "~> 2.7.0", only: :test}
+      {:ex_machina, "~> 2.7.0", unless: :prod}
     ]
   end
 
