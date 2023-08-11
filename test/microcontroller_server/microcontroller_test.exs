@@ -20,12 +20,16 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert Microcontroller.get_device!(device.id) == device
     end
 
-    test "get_device_by_controller_id/1 return the device with the given controller id" do
+    test "get_device_by_fields/3 return the device with the given controller id" do
       device = insert(:device)
+      assert {:ok, ^device} = Microcontroller.get_device_by_fields(device.controller_id, device.user_id, device.location_id)
 
-      assert ^device = Microcontroller.get_device_by_controller_id(device.controller_id)
+      device = build(:device)
+      assert {:ok, %Device{} = device_read} = Microcontroller.get_device_by_fields(device.controller_id, device.user_id, device.location_id)
 
-      assert nil == Microcontroller.get_device_by_controller_id(device.controller_id + 1)
+      assert device_read.controller_id == device.controller_id
+      assert device_read.user_id == device.user_id
+      assert device_read.location_id == device.location_id
     end
 
     test "create_device/1 with valid data creates a device" do

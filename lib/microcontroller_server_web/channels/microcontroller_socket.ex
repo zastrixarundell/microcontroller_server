@@ -9,7 +9,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
   channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
 
-  alias MicrocontrollerServer.Services.AuthServices
+  alias MicrocontrollerServer.{Microcontroller, Services.AuthServices}
 
   require Logger
 
@@ -20,13 +20,12 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
     Logger.debug("Trying connection for API token: #{potential_token}")
 
     with {:ok, token} <- api_token_regex(potential_token),
-         {:ok, user_id, location_id, controller_id} <- authenticate_token(token) do
+         {:ok, user_id, location_id, controller_id} <- authenticate_token(token),
+         {:ok, device} <- Microcontroller.get_device_by_fields(controller_id, user_id, location_id) do
 
       socket =
         socket
-        |> assign(user_id: user_id)
-        |> assign(location_id: location_id)
-        |> assign(controller_id: controller_id)
+        |> assign(device: device)
 
       Logger.debug("Accepted connection for API token: #{potential_token} and for assigns: #{inspect(socket.assigns)}")
 
@@ -115,5 +114,5 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   # and they will need a unique identifier logic on their side but this is okay in the instance of
   # wanting to turn off all of the lights or similar.
   @impl true
-  def id(socket), do: "microcontroller_socket:#{socket.assigns.location_id}"
+  def id(socket), do: "microcontroller_socket:#{socket.assigns.device.location_id}"
 end

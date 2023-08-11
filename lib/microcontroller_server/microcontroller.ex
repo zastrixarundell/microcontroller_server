@@ -42,16 +42,19 @@ defmodule MicrocontrollerServer.Microcontroller do
 
   ## Examples
 
-      iex> get_device_by_controller(2)
-      %Device{controller_id: 2}
+      iex> get_device_by_fields(1, 2, 3)
+      {:ok, %Device{controller_id: 1, user_id: 2, location_id: 3}}
 
-      iex> create_device(bad_value)
+      iex> get_device_by_fields(bad_value, bad_value, bad_value)
       nil
   """
-  def get_device_by_controller_id(controller_id) do
-    Device
-    |> where(controller_id: ^controller_id)
-    |> Repo.one()
+  def get_device_by_fields(controller_id, user_id, location_id) do
+    case Repo.get_by(Device, controller_id: controller_id) do
+      nil ->
+        create_device(%{controller_id: controller_id, user_id: user_id, location_id: location_id})
+      device ->
+        {:ok, device}
+    end
   end
 
   @doc """

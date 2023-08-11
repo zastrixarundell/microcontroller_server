@@ -5,6 +5,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
   alias MicrocontrollerServerWeb.MicrocontrollerSocket, as: Socket
 
+  import MicrocontrollerServer.Factory
   import Mox
 
   setup do
@@ -22,9 +23,12 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
   describe "The microcontroller" do
     test "connects to socket when the API token is valid" do
+      device = insert(:device, user_id: 1, location_id: 2, controller_id: 3)
+
       {:ok, socket} = connect(Socket, %{token: "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"})
 
       assert socket.id, "microcontroller_socket:2"
+      assert %{device: device} == socket.assigns
     end
 
     test "does not connect to the socket if the API token format is invalid" do
