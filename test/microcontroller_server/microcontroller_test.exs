@@ -101,9 +101,12 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
     end
 
     test "create_reading/1 with valid data creates a reading" do
-      valid_attrs = %{type: "pressure", value: 120.5}
+      sensor = insert(:sensor)
 
-      assert {:ok, %Reading{} = reading} = Microcontroller.create_reading(valid_attrs)
+      valid_attrs = %{type: "pressure", value: 120.5, sensor_id: sensor.id}
+
+      assert {:ok, %MicrocontrollerServer.Microcontroller.Reading{} = reading} =
+        MicrocontrollerServer.Microcontroller.create_reading(valid_attrs)
 
       assert reading.type == "pressure"
       assert reading.value == 120.5
@@ -133,6 +136,10 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
 
     test "create_reading/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Microcontroller.create_reading(@invalid_attrs)
+
+      reading = build(:reading, sensor: nil)
+
+      assert {:error, %Ecto.Changeset{}} = Microcontroller.create_reading(reading |> Map.from_struct())
     end
 
     test "update_reading/2 with valid data updates the reading" do
@@ -183,7 +190,9 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
     end
 
     test "create_sensor/1 with valid data creates a sensor" do
-      valid_attrs = %{name: "some name"}
+      device = insert(:device)
+
+      valid_attrs = %{name: "some name", device_id: device.id}
 
       assert {:ok, %Sensor{} = sensor} = Microcontroller.create_sensor(valid_attrs)
       assert sensor.name == "some name"

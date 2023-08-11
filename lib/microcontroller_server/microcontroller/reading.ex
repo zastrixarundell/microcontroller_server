@@ -3,13 +3,22 @@ defmodule MicrocontrollerServer.Microcontroller.Reading do
   Module representing the Reading model.
   """
 
+  alias MicrocontrollerServer.Microcontroller.{ReadingType, Sensor}
+
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+    id: integer(),
+    type: ReadingType.t(),
+    value: float(),
+    sensor: Sensor.t()
+  }
+
   schema "readings" do
-    field :type, MicrocontrollerServer.Microcontroller.ReadingType
+    field :type, ReadingType
     field :value, :float
-    belongs_to :sensor, MicrocontrollerServer.Microcontroller.Sensor
+    belongs_to :sensor, Sensor
 
     timestamps()
   end
@@ -17,7 +26,7 @@ defmodule MicrocontrollerServer.Microcontroller.Reading do
   @doc false
   def changeset(reading, attrs) do
     reading
-    |> cast(attrs, [:type, :value])
-    |> validate_required([:type, :value])
+    |> cast(attrs, [:type, :value, :sensor_id])
+    |> validate_required([:type, :value, :sensor_id])
   end
 end

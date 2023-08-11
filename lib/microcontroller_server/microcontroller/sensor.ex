@@ -8,6 +8,15 @@ defmodule MicrocontrollerServer.Microcontroller.Sensor do
 
   alias MicrocontrollerServer.Microcontroller.{Device, Reading}
 
+  @type t :: %__MODULE__{
+    id: integer,
+    name: String.t(),
+    device: Device.t(),
+    readings: list(Reading.t()),
+    inserted_at: DateTime.t(),
+    updated_at: DateTime.t()
+  }
+
   schema "sensors" do
     field :name, :string
     belongs_to :device, Device
@@ -19,7 +28,7 @@ defmodule MicrocontrollerServer.Microcontroller.Sensor do
   @doc false
   def changeset(sensor, attrs) do
     sensor
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :device_id])
+    |> validate_required([:name, :device_id])
   end
 end
