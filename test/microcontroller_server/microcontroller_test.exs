@@ -7,7 +7,7 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
   alias MicrocontrollerServer.Microcontroller.{Device, Reading, Sensor}
 
   describe "devices" do
-    @invalid_attrs %{user_id: nil, location_id: nil}
+    @invalid_attrs %{user_id: nil, location_id: nil, controller_id: nil}
 
     test "list_devices/0 returns all devices" do
       device = insert(:device)
@@ -138,62 +138,68 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
     end
 
     test "change_reading/1 returns a reading changeset" do
-      reading = insert(:reading)
+      reading = build(:reading)
       assert %Ecto.Changeset{} = Microcontroller.change_reading(reading)
     end
   end
 
-  # describe "sensors" do
-  #   alias MicrocontrollerServer.Microcontroller.Sensor
+  describe "sensors" do
+    @invalid_attrs %{name: nil}
 
-  #   import MicrocontrollerServer.MicrocontrollerFixtures
+    test "list_sensors/0 returns all sensors" do
+      sensor = insert(:sensor)
+      assert Microcontroller.list_sensors() |> Microcontroller.load_sensor_with_device() == [sensor]
+    end
 
-  #   @invalid_attrs %{name: nil}
+    test "get_sensor!/1 returns the sensor with given id" do
+      sensor = insert(:sensor)
+      assert Microcontroller.get_sensor!(sensor.id) |> Microcontroller.load_sensor_with_device == sensor
+    end
 
-  #   test "list_sensors/0 returns all sensors" do
-  #     sensor = sensor_fixture()
-  #     assert Microcontroller.list_sensors() == [sensor]
-  #   end
+    test "create_sensor/1 with valid data creates a sensor" do
+      valid_attrs = %{name: "some name"}
 
-  #   test "get_sensor!/1 returns the sensor with given id" do
-  #     sensor = sensor_fixture()
-  #     assert Microcontroller.get_sensor!(sensor.id) == sensor
-  #   end
+      assert {:ok, %Sensor{} = sensor} = Microcontroller.create_sensor(valid_attrs)
+      assert sensor.name == "some name"
+    end
 
-  #   test "create_sensor/1 with valid data creates a sensor" do
-  #     valid_attrs = %{name: "some name"}
+    test "create_sensor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Microcontroller.create_sensor(@invalid_attrs)
+    end
 
-  #     assert {:ok, %Sensor{} = sensor} = Microcontroller.create_sensor(valid_attrs)
-  #     assert sensor.name == "some name"
-  #   end
+    test "update_sensor/2 with valid data updates the sensor" do
+      sensor = insert(:sensor)
+      update_attrs = %{name: "some updated name"}
 
-  #   test "create_sensor/1 with invalid data returns error changeset" do
-  #     assert {:error, %Ecto.Changeset{}} = Microcontroller.create_sensor(@invalid_attrs)
-  #   end
+      assert {:ok, %Sensor{} = sensor} = Microcontroller.update_sensor(sensor, update_attrs)
+      assert sensor.name == "some updated name"
+    end
 
-  #   test "update_sensor/2 with valid data updates the sensor" do
-  #     sensor = sensor_fixture()
-  #     update_attrs = %{name: "some updated name"}
+    test "load_sensor_with_readings/1 loads readings into the sensor" do
+      reading = insert(:reading)
+      reading_new = reading.sensor
+      readings = [reading, reading_new]
 
-  #     assert {:ok, %Sensor{} = sensor} = Microcontroller.update_sensor(sensor, update_attrs)
-  #     assert sensor.name == "some updated name"
-  #   end
+      assert (%Sensor{} = read_sensor) = Microcontroller.get_sensor!(reading.sensor.id) |> Microcontroller.load_sensor_with_readings()
 
-  #   test "update_sensor/2 with invalid data returns error changeset" do
-  #     sensor = sensor_fixture()
-  #     assert {:error, %Ecto.Changeset{}} = Microcontroller.update_sensor(sensor, @invalid_attrs)
-  #     assert sensor == Microcontroller.get_sensor!(sensor.id)
-  #   end
+      assert readings, read_sensor.readings
+    end
 
-  #   test "delete_sensor/1 deletes the sensor" do
-  #     sensor = sensor_fixture()
-  #     assert {:ok, %Sensor{}} = Microcontroller.delete_sensor(sensor)
-  #     assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_sensor!(sensor.id) end
-  #   end
+    test "update_sensor/2 with invalid data returns error changeset" do
+      sensor = insert(:sensor)
+      assert {:error, %Ecto.Changeset{}} = Microcontroller.update_sensor(sensor, @invalid_attrs)
+      assert sensor == Microcontroller.get_sensor!(sensor.id) |> Microcontroller.load_sensor_with_device()
+    end
 
-  #   test "change_sensor/1 returns a sensor changeset" do
-  #     sensor = sensor_fixture()
-  #     assert %Ecto.Changeset{} = Microcontroller.change_sensor(sensor)
-  #   end
-  # end
+    test "delete_sensor/1 deletes the sensor" do
+      sensor = insert(:sensor)
+      assert {:ok, %Sensor{}} = Microcontroller.delete_sensor(sensor)
+      assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_sensor!(sensor.id) end
+    end
+
+    test "change_sensor/1 returns a sensor changeset" do
+      sensor = build(:sensor)
+      assert %Ecto.Changeset{} = Microcontroller.change_sensor(sensor)
+    end
+  end
 end

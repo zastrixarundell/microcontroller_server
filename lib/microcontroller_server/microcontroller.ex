@@ -251,6 +251,16 @@ defmodule MicrocontrollerServer.Microcontroller do
   def get_sensor!(id), do: Repo.get!(Sensor, id)
 
   @doc """
+  Load the ecto relation with readings for a sensor.
+  """
+  def load_sensor_with_readings(sensors), do: Repo.preload(sensors, [:readings])
+
+  @doc """
+  Load the ecto relation with the device for a sensor.
+  """
+  def load_sensor_with_device(sensors), do: Repo.preload(sensors, [:device])
+
+  @doc """
   Creates a sensor.
 
   ## Examples
