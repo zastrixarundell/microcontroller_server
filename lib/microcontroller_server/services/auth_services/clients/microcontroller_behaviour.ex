@@ -1,5 +1,5 @@
 defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour do
-  alias HTTPoison.{Request, Error}
+  alias HTTPoison.{Error, Request}
 
   @moduledoc """
   Behaviour for the API requests for the microcontroller auth server. It's written this way

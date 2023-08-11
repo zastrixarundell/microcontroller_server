@@ -21,7 +21,9 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
       iex> authenticate_token("INVALID_TOKEN")
       {:error, :authentication_failed}
   """
-  @spec authenticate_token(token :: binary()) :: {:ok, %{user_id: integer(), location_id: integer(), contrroller_id: integer()}} | {:error, :authentication_failed}
+  @spec authenticate_token(token :: binary()) ::
+    {:ok, %{user_id: integer(), location_id: integer(), contrroller_id: integer()}} |
+    {:error, :authentication_failed}
   def authenticate_token(token) do
     with {:ok, %Response{status_code: 200} = response} <- auth_client().get("/api/v1/auth", %{token: token}),
          {:ok, %{"user_id" => uid, "location_id" => lid, "controller_id" => cid}} <- decode_body(response) do
@@ -39,7 +41,11 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
     |> Jason.decode()
   end
 
-  defp auth_client() do
-    Application.get_env(:microcontroller_server, :microcontroller_auth_client, MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerClient)
+  defp auth_client do
+    Application.get_env(
+      :microcontroller_server,
+      :microcontroller_auth_client,
+      MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerClient
+    )
   end
 end

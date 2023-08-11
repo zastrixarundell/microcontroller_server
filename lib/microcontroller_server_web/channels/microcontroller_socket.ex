@@ -81,7 +81,6 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
     end
   end
 
-
   @doc """
   Authenticate the device with the microcontroller authentication server.
 
@@ -110,7 +109,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
     end
   end
 
-  defp authentication_service() do
+  defp authentication_service do
     Application.get_env(:microcontroller_server, :microcontroller_auth_server, AuthServices.MicrocontrollerAuthService)
   end
 

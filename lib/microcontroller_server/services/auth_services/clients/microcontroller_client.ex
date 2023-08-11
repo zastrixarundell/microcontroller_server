@@ -15,7 +15,11 @@ defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerCli
     |> HTTPoison.get()
   end
 
-  defp auth_server_details() do
-    Application.get_env(:microcontroller_server, MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, %{})
+  defp auth_server_details do
+    Application.get_env(
+      :microcontroller_server,
+      MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService,
+      %{}
+    )
   end
 end
