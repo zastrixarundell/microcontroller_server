@@ -49,7 +49,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   must start with `API_TOKEN_MC_` and is then followed by at least `16` characters
   which can be uppercase and lowercaser letters alongside numbers.
 
-  ### Examples
+  ## Examples
 
       iex> api_token_regex("API_TOKEN_MC_VZGkp2vvJJjHj3qZ")
       {:ok, "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"}
@@ -92,7 +92,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   * `location_id`
   * `controller_id`
 
-  ### Examples
+  ## Examples
 
       iex> authenticate_token("API_TOKEN_MC_VZGkp2vvJJjHj3qZ")
       {:ok, 1, 2, 3}

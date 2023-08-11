@@ -13,7 +13,7 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
   like the Controller ID, user ID and location ID (the location ID is used
   to send information to the controlers en-masse).
 
-  ### Examples
+  ## Examples
 
       iex> authenticate_token("CORRECT_TOKEN")
       {:ok, %{user_id: 1, location_id: 2, controller_id: 3}}
