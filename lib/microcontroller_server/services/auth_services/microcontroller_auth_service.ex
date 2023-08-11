@@ -22,6 +22,9 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
 
       iex> authenticate_token("INVALID_TOKEN")
       {:error, :authentication_failed}
+
+      iex> authenticate_token("INACCESSIBLE_SERVER")
+      {:error, :authentication_failed}
   """
   @spec authenticate_token(token :: binary()) ::
     {:ok, %{user_id: integer(), location_id: integer(), contrroller_id: integer()}} |

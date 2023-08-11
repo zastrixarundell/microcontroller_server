@@ -3,7 +3,7 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
 
   import Mox
 
-  alias HTTPoison.Response
+  alias HTTPoison.{Error, Response}
 
   doctest MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, import: true
 
@@ -11,9 +11,17 @@ defmodule MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService
     expect(AuthServiceMicrocontrollerMock, :get, fn _path, body_params ->
       case body_params.token do
         "INVALID_TOKEN" ->
-          %Response{
-            status_code: 401
+          {
+            :ok,
+            %Response{
+              status_code: 401
+            }
           }
+        "INACCESSIBLE_SERVER" ->
+        {
+          :error,
+          %Error{}
+        }
         _ ->
         {
           :ok,
