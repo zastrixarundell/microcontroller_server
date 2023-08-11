@@ -1,4 +1,6 @@
 defmodule MicrocontrollerServer.Factory do
+  @moduledoc false
+
   use ExMachina.Ecto, repo: MicrocontrollerServer.Repo
 
   alias MicrocontrollerServer.Microcontroller.{Device, Reading, Sensor}

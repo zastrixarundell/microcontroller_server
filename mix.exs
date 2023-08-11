@@ -47,7 +47,8 @@ defmodule MicrocontrollerServer.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:hammox, "~> 0.7", only: :test},
       {:httpoison, "~> 2.0"},
-      {:ex_machina, "~> 2.7.0", unless: :prod}
+      {:ex_machina, "~> 2.7.0", unless: :prod},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -62,7 +63,8 @@ defmodule MicrocontrollerServer.MixProject do
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      lint: ~w(credo)
     ]
   end
 end

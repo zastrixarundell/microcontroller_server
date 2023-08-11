@@ -1,6 +1,8 @@
 defmodule MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1 do
   use MicrocontrollerServerWeb, :channel
 
+  @moduledoc false
+
   require Logger
 
   @impl true

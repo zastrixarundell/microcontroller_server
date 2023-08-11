@@ -45,7 +45,6 @@ defmodule MicrocontrollerServer.Microcontroller.ReadingType do
   def dump(value) when is_integer(value), do: {:ok, value}
 
   def dump(_) do
-    IO.inspect("errro")
     :error
   end
 end

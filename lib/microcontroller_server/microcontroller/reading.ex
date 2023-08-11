@@ -1,4 +1,8 @@
 defmodule MicrocontrollerServer.Microcontroller.Reading do
+  @moduledoc """
+  Module representing the Reading model.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

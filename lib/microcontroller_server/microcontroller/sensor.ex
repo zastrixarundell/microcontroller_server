@@ -1,4 +1,8 @@
 defmodule MicrocontrollerServer.Microcontroller.Sensor do
+  @moduledoc """
+  Module representing the Sensor model.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

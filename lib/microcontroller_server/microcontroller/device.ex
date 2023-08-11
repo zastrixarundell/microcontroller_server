@@ -1,4 +1,8 @@
 defmodule MicrocontrollerServer.Microcontroller.Device do
+  @moduledoc """
+  Module representing the Device model.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
