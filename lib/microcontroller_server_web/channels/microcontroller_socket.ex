@@ -20,7 +20,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
       |> Map.get(:x_headers, [])
       |> Enum.find_value(&extract_api_key/1)
 
-    Logger.info("Receiving connection request for token: #{token}")
+    Logger.info("Receiving connection request for token: '#{token}'")
 
     with {:ok, token} <- api_token_regex(token),
          {:ok, user_id, location_id, controller_id} <- authenticate_token(token),
@@ -127,5 +127,5 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   # and they will need a unique identifier logic on their side but this is okay in the instance of
   # wanting to turn off all of the lights or similar.
   @impl true
-  def id(socket), do: "microcontroller_socket:#{socket.assigns.device.location_id}"
+  def id(socket), do: "microcontroller:location:#{socket.assigns.device.location_id}"
 end

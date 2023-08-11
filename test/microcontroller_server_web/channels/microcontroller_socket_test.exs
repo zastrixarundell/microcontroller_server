@@ -27,7 +27,9 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
       {:ok, socket} = connect(Socket, %{}, connect_info: %{x_headers: [{"x-api-key", "API_TOKEN_MC_VZGkp2vvJJjHj3qZ"}]})
 
-      assert socket.id, "microcontroller_socket:2"
+      assert socket.id == "microcontroller:location:2"
+      refute socket.id == "microcontroller:location:1"
+
       assert %{device: device} == socket.assigns
     end
 

@@ -15,7 +15,7 @@ defmodule MicrocontrollerServerWeb.Endpoint do
 
   # Developer defined sockets
 
-  socket "/socket", MicrocontrollerServerWeb.MicrocontrollerSocket,
+  socket "/microcontrollers", MicrocontrollerServerWeb.MicrocontrollerSocket,
     websocket: [
       connect_info: [:x_headers]
     ],
