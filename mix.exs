@@ -17,6 +17,16 @@ defmodule MicrocontrollerServer.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
+      ],
+
+      # Docs
+      name: "MicrocontrollerServer",
+      source_url: "https://github.com/zastrixarundell/microcontroller_server",
+      homepage_url: "https://github.com/zastrixarundell/microcontroller_server",
+      docs: [
+        main: "MicrocontrollerServer", # The main page in the docs
+        #logo: "path/to/logo.png",
+        extras: ["README.md"]
       ]
     ]
   end
@@ -57,7 +67,8 @@ defmodule MicrocontrollerServer.MixProject do
       {:httpoison, "~> 2.0"},
       {:ex_machina, "~> 2.7.0", unless: :prod},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
 
