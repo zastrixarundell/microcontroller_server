@@ -152,6 +152,13 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_reading!(reading.id) end
     end
 
+    test "are destoyed when the sensor is destroyed" do
+      reading = insert(:reading)
+
+      assert {:ok, %Sensor{}} = Microcontroller.delete_sensor(reading.sensor)
+      assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_reading!(reading.id) end
+    end
+
     test "change_reading/1 returns a reading changeset" do
       reading = build(:reading)
       assert %Ecto.Changeset{} = Microcontroller.change_reading(reading)
@@ -211,6 +218,14 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert {:ok, %Sensor{}} = Microcontroller.delete_sensor(sensor)
       assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_sensor!(sensor.id) end
     end
+
+    test "are destoyed when the device is destroyed" do
+      sensor = insert(:sensor)
+
+      assert {:ok, %Device{}} = Microcontroller.delete_device(sensor.device)
+      assert_raise Ecto.NoResultsError, fn -> Microcontroller.get_sensor!(sensor.id) end
+    end
+
 
     test "change_sensor/1 returns a sensor changeset" do
       sensor = build(:sensor)
