@@ -36,9 +36,10 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
       assert {:ok, message} = Jason.decode(received_message |> elem(2), keys: :atoms)
 
-      assert device.controller_id == message.payload.controller_id
-      assert device.user_id == message.payload.user_id
-      assert device.location_id == message.payload.location_id
+      assert message.event == "metadata"
+      assert message.payload.controller_id == device.controller_id
+      assert message.payload.user_id == device.user_id
+      assert message.payload.location_id == device.location_id
     end
 
     test "does not connect to the socket if the API token format is invalid" do

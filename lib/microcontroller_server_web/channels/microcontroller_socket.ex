@@ -79,7 +79,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   ## Examples
 
       iex> generate_metadata_message(%Phoenix.Socket{assigns: %{device: %MicrocontrollerServer.Microcontroller.Device{location_id: 1, user_id: 2, controller_id: 3}}})
-      {:ok, %{ref: nil, payload: %{controller_id: 3, user_id: 2, location_id: 1}, topic: nil, join_ref: nil, event: "phx_reply"}}
+      {:ok, %{ref: nil, payload: %{controller_id: 3, user_id: 2, location_id: 1}, topic: nil, join_ref: nil, event: "metadata"}}
 
       iex> generate_metadata_message(%Phoenix.Socket{})
       :error
@@ -102,7 +102,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
       topic: socket.id,
       ref: socket.ref,
       join_ref: socket.join_ref,
-      event: "phx_reply",
+      event: "metadata",
       payload: %{
         user_id: device.user_id,
         controller_id: device.controller_id,

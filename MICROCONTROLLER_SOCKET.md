@@ -46,7 +46,7 @@ When the device authenticates and connects to the server, a message is sent to i
         "controller_id": 3
     },
     "topic": "microcontroller:3",
-    "event": "phx_reply",
+    "event": "metadata",
     "join_ref": null
 }
 ```
@@ -74,3 +74,64 @@ In a nutshell the websocket needs to send a message to the Phoenix server every 
 * `payload`: The actual data associated with the event. For some events (like phx_join) the payload is ignored.
 * `ref`: Just an idenfifier for the message. When you get back a reply it will have the same ref value as the event that it is replying to. Since channels are asynchronous you could quickly send two events before receiving a reply and you would need to use ref to know which event it relates to. In my examples I have hard coded ref to 0 but in reality you probably want a counter and some helper function to get the next reference number (or use a uuid).`
 `
+
+### V1 API
+
+#### Joining
+
+To join the rquired microcontroller channel for the `v1` version of the API, the following data needs to be sent to the server:
+
+```json
+{
+  "topic": "microcontroller:v1:$controller_id",
+  "event": "phx_join",
+  "payload": {},
+  "ref": 0,
+  "join_ref": 0
+}
+```
+
+#### Sending reading information
+
+After the controller has joined the channel, it can send its' reading information in the following format:
+
+```json
+{
+  "topic": "microcontroller:v1:$controller_id",
+  "event": "upload_reading",
+  "payload": {
+    "$sensor-id": [
+      {
+        "type": "$reading_type",
+        "value": "$value"
+      },
+      {
+        "type": "$reading_type",
+        "value": "$value"
+      }
+    ]
+  },
+  "ref": 0,
+  "join_ref": 0
+}
+```
+
+#### Motor controls
+
+To receive informations as to how to control a motor the following inforamtion needs to be intercepted:
+
+
+```json
+{
+  "topic": "microcontroller:v1:$controller_id",
+  "event": "control_update",
+  "payload": {
+    "control": [
+      {
+        "$control_id": $control_value
+      }
+    ]
+  }
+}
+```
+
