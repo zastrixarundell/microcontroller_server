@@ -4,6 +4,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
   doctest MicrocontrollerServerWeb.MicrocontrollerSocket, import: true
 
   alias MicrocontrollerServerWeb.MicrocontrollerSocket, as: Socket
+  alias MicrocontrollerServer.Microcontroller.Device
 
   import MicrocontrollerServer.Factory
   import Mox
@@ -29,7 +30,15 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocketTest do
 
       assert socket.id == "microcontroller:3"
 
-      assert %{device: device} == socket.assigns
+      assert %{device: %Device{} = device} == socket.assigns
+
+      received_message = assert_receive {:socket_push, :text, _}
+
+      assert {:ok, message} = Jason.decode(received_message |> elem(2), keys: :atoms)
+
+      assert device.controller_id == message.payload.controller_id
+      assert device.user_id == message.payload.user_id
+      assert device.location_id == message.payload.location_id
     end
 
     test "does not connect to the socket if the API token format is invalid" do
