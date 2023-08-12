@@ -58,8 +58,6 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
 
       Logger.info("μController connection accepted.")
 
-      IO.inspect(device)
-
       {:ok, assign(socket, :device, device)}
     else
       {:error, :invalid_token} ->
