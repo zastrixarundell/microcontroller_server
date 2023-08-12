@@ -23,11 +23,13 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   def init(state) do
     response = {:ok, {_, %{transport_pid: transport_pid} = socket}} = super(state)
 
-    case generate_metadata_message(socket) do
-      {:ok, message} ->
-        send(transport_pid, {:socket_push, :text, message})
-        Logger.debug("Sent metadata to μController: #{socket.assigns.device.controller_id}")
+    with {:ok, body} <- generate_metadata_message(socket),
+         {:ok, message} <- Jason.encode(body) do
 
+      send(transport_pid, {:socket_push, :text, message})
+      Logger.debug("Sent metadata to μController: #{socket.assigns.device.controller_id}")
+
+    else
       _ ->
         Logger.warning("Failed to send metadata to μController: #{socket.assigns.device.controller_id}")
     end
@@ -77,17 +79,17 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   ## Examples
 
       iex> generate_metadata_message(%Phoenix.Socket{assigns: %{device: %MicrocontrollerServer.Microcontroller.Device{location_id: 1, user_id: 2, controller_id: 3}}})
-      {:ok, ~S({"ref":null,"payload":{"controller_id":3,"user_id":2,"location_id":1},"topic":null,"join_ref":null,"event":"phx_reply"})}
+      {:ok, %{ref: nil, payload: %{controller_id: 3, user_id: 2, location_id: 1}, topic: nil, join_ref: nil, event: "phx_reply"}}
 
       iex> generate_metadata_message(%Phoenix.Socket{})
       :error
   """
-  @spec generate_metadata_message(socket :: Phoenix.Socket.t()) :: {:ok, String.t()} | :error
+  @spec generate_metadata_message(socket :: Phoenix.Socket.t()) :: {:ok, map()} | :error
   def generate_metadata_message(%Phoenix.Socket{} = socket) do
     with {:ok, assigns} <- Map.fetch(socket, :assigns),
          {:ok, %Device{} = device} <- Map.fetch(assigns, :device),
-         {:ok, message} <- generate_metadata_string(socket, device) do
-          {:ok, message}
+         %{} = message <- generate_metadata_string(socket, device) do
+      {:ok, message}
     else
       _ ->
         :error
@@ -107,7 +109,6 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
         location_id: device.location_id
       }
     }
-    |> Jason.encode()
   end
 
   @doc """
