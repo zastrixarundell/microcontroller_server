@@ -176,6 +176,44 @@ defmodule MicrocontrollerServer.Microcontroller do
   end
 
   @doc """
+  Insert multiple readings. Similar to `create_reading/1` but it doesn't give
+  back the schema.
+  """
+  @spec create_readings(attrs :: [map()]) ::
+    {:ok, %{readings: {number_of_rows :: integer(), nil}}} |
+    {:error, [Ecto.Changeset.t()]}
+  def create_readings(attrs \\ []) do
+    changesets =
+      attrs
+      |> Enum.map(&change_reading(%Reading{}, &1))
+
+    if all_changesets_valid?(changesets) do
+      attrs =
+        attrs
+        |> add_timestamps()
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert_all(:readings, Reading, attrs)
+      |> Repo.transaction()
+    else
+      {:error, changesets}
+    end
+  end
+
+  defp all_changesets_valid?(changesets) do
+    Enum.all?(changesets, &Enum.empty?(&1.errors))
+  end
+
+  defp add_timestamps(attrs) do
+    Enum.map(attrs, &add_timestamp(&1))
+  end
+
+  defp add_timestamp(attrs) do
+    attrs
+    |> Map.merge(Map.from_keys([:inserted_at, :updated_at], NaiveDateTime.truncate(NaiveDateTime.utc_now, :second)))
+  end
+
+  @doc """
   Updates a reading.
 
   ## Examples

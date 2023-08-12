@@ -112,6 +112,43 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert reading.value == 120.5
     end
 
+    test "create_readings/1 creates multiple readings" do
+      sensor = insert(:sensor)
+
+      readings =
+        0..5
+        |> Enum.map(fn _ -> build(:reading) end)
+        |> Enum.map(&Map.take(&1, [:type, :value]))
+        |> Enum.map(&Map.put(&1, :sensor_id, sensor.id))
+
+      assert {:ok, %{readings: {6, _}}} = MicrocontrollerServer.Microcontroller.create_readings(readings)
+
+      reading = MicrocontrollerServer.Microcontroller.list_readings()
+
+      assert Enum.at(readings, 0).type == Enum.at(readings, 0).type
+    end
+
+    test "create_readings/1 doesn't create multiple readings with incorrect data" do
+      sensor = insert(:sensor)
+
+      readings =
+        0..5
+        |> Enum.map(fn _ -> build(:reading) end)
+        |> Enum.map(&Map.take(&1, [:type, :value]))
+        |> Enum.map(&Map.put(&1, :sensor_id, sensor.id))
+        |> Enum.map(&Map.put(&1, :value, nil))
+
+      assert {:error, _} = MicrocontrollerServer.Microcontroller.create_readings(readings)
+
+      readings =
+        0..5
+        |> Enum.map(fn _ -> build(:reading) end)
+        |> Enum.map(&Map.take(&1, [:type, :value]))
+        |> Enum.map(&Map.put(&1, :sensor_id, nil))
+
+      assert {:error, _} = MicrocontrollerServer.Microcontroller.create_readings(readings)
+    end
+
     test "have correct enumaration of types" do
       alias Microcontroller.ReadingType
 
