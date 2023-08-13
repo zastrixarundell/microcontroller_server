@@ -1,0 +1,32 @@
+name: Elixir CI
+
+on:
+  push:
+    branches: [ "master" ]
+jobs:
+  generate_docs:
+    name: Generate project documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Elixir
+      uses: erlef/setup-beam@61e01a43a562a89bfc54c7f9a378ff67b03e4a21
+      with:
+        elixir-version: '1.15.4'
+        otp-version: '26.0'
+    - name: Restore dependencies cache
+      uses: actions/cache@v3
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+    - name: Install dependencies
+      run: mix deps.get
+    - name: Build docs
+      uses: lee-dohm/generate-elixir-docs@v1
+    - name: Publish to Pages
+      uses: peaceiris/actions-gh-pages@v1.0.1
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        PUBLISH_DIR: ./doc
+        PUBLISH_BRANCH: gh-pages
