@@ -24,9 +24,8 @@ defmodule MicrocontrollerServer.MixProject do
       source_url: "https://github.com/zastrixarundell/microcontroller_server",
       homepage_url: "https://github.com/zastrixarundell/microcontroller_server",
       docs: [
-        main: "MicrocontrollerServer", # The main page in the docs
-        #logo: "path/to/logo.png",
-        extras: ["README.md"]
+        main: "readme",
+        extras: ~w(README.md MICROCONTROLLER_SOCKET.md)
       ]
     ]
   end
