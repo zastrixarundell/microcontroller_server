@@ -1,8 +1,10 @@
+name: Elixir CI
+
 on:
   push:
     branches: [ "master" ]
 jobs:
-  generateDocs:
+  generate_docs:
     name: Generate project documentation
     runs-on: ubuntu-latest
     steps:
