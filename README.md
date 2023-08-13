@@ -2,7 +2,7 @@
 
 > Elixir phoenix based microservice application to control and communicate with microcontrollers.
 
-![CI/CD](https://github.com/zastrixarundell/microcontroller_server/workflows/Elixir%20CI/badge.svg) ![Static Badge](https://img.shields.io/badge/documentation-gray?link=https%3A%2F%2Fmicrocontroller-server.armor.quest)
+![CI/CD](https://github.com/zastrixarundell/microcontroller_server/workflows/Elixir%20CI/badge.svg) [![Static Badge](https://img.shields.io/badge/documentation-gray)](https://microcontroller-server.armor.quest)
 
 
 ## Contents
