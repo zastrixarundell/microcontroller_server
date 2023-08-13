@@ -221,6 +221,18 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
       assert Microcontroller.list_sensors() |> Microcontroller.load_sensor_with_device() == [sensor]
     end
 
+    test "list_sensors_for_device/1" do
+      sensor = insert(:sensor)
+      sensor1 = insert(:sensor, device: sensor.device)
+
+      all_sensors =
+        sensor.device.id
+        |> Microcontroller.list_sensors_for_device()
+        |> Enum.map(&Microcontroller.load_sensor_with_device/1)
+
+      assert all_sensors == [sensor, sensor1]
+    end
+
     test "get_sensor!/1 returns the sensor with given id" do
       sensor = insert(:sensor)
       assert Microcontroller.get_sensor!(sensor.id) |> Microcontroller.load_sensor_with_device == sensor

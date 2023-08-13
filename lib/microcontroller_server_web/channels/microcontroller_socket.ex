@@ -9,7 +9,7 @@ defmodule MicrocontrollerServerWeb.MicrocontrollerSocket do
   When the client connects to the socket a message is sent to it containing the required metadata.
   """
 
-  channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1
+  channel "microcontroller:v1:*", MicrocontrollerServerWeb.MicrocontrollerSocket.Channels.V1.MicrocontrollerChannel
 
   alias MicrocontrollerServer.{Microcontroller, Microcontroller.Device, Services.AuthServices}
 

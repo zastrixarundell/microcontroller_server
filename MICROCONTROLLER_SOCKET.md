@@ -98,7 +98,7 @@ After the controller has joined the channel, it can send its' reading informatio
 ```json
 {
   "topic": "microcontroller:v1:$controller_id",
-  "event": "upload_reading",
+  "event": "upload_readings",
   "payload": {
     "$sensor-id": [
       {

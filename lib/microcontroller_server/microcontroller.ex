@@ -187,10 +187,12 @@ defmodule MicrocontrollerServer.Microcontroller do
       attrs
       |> Enum.map(&change_reading(%Reading{}, &1))
 
+    attrs =
+      changesets
+      |> Enum.map(fn element -> Map.take(element.changes, [:sensor_id, :type, :value]) end)
+
     if all_changesets_valid?(changesets) do
-      attrs =
-        attrs
-        |> add_timestamps()
+      attrs = add_timestamps(attrs)
 
       Ecto.Multi.new()
       |> Ecto.Multi.insert_all(:readings, Reading, attrs)
@@ -273,6 +275,23 @@ defmodule MicrocontrollerServer.Microcontroller do
   """
   def list_sensors do
     Repo.all(Sensor)
+  end
+
+  @doc """
+  Gets all of the sensor values for the given device.
+
+  ## Examples
+
+      iex> list_sensors_for_device(device_id)
+      [%Sensor{}, %Sensor{}]
+  """
+  @spec list_sensors_for_device(device_id :: integer()) :: [Sensor.t()]
+  def list_sensors_for_device(device_id) do
+    from(
+      sensor in Sensor,
+        where: sensor.device_id == ^device_id
+    )
+    |> Repo.all
   end
 
   @doc """
