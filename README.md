@@ -13,6 +13,7 @@ Elixir phoenix based microservice application to control and communicate with mi
   * [Background tools](#background-tools)
   * [Environment variables](#environment-variables)
 * [Running the server](#running-the-server)
+* [Clients](#clients)
 * [Learn more](#learn-more)
 
 ## Detailed explanation
@@ -96,6 +97,12 @@ To start your Phoenix server:
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+
+## Clients
+
+General documentation for client. Because of the sheer amount of connections/call, specific files are created for each each scenario. Potentially in a CI/CD environment the documentation for the API will be generated and hosted in a better way.
+
+* [Microcontroller as client](./MICROCONTROLLER_SOCKET.md)
 
 ## Learn more
 

@@ -1,5 +1,5 @@
 defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerClient do
-  @behaviour MicrocourlntrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour
+  @behaviour MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerBehaviour
 
   @moduledoc """
   Actual implementation of the HTTPoison request wrappers.
@@ -15,7 +15,11 @@ defmodule MicrocontrollerServer.Services.AuthServices.Clients.MicrocontrollerCli
     |> HTTPoison.get()
   end
 
-  defp auth_server_details() do
-    Application.get_env(:microcontroller_server, MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService, %{})
+  defp auth_server_details do
+    Application.get_env(
+      :microcontroller_server,
+      MicrocontrollerServer.Services.AuthServices.MicrocontrollerAuthService,
+      %{}
+    )
   end
 end
