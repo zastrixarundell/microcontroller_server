@@ -176,8 +176,8 @@ defmodule MicrocontrollerServer.Microcontroller do
   end
 
   @doc """
-  Insert multiple readings. Similar to `create_reading/1` but it doesn't give
-  back the schema.
+  Insert multiple readings at the same time. Similar to `create_reading/1`, only that it retuns
+  an array when it's completed.
   """
   @spec create_readings(attrs :: [map()]) ::
     {:ok, %{readings: {number_of_rows :: integer(), nil}}} |
@@ -194,9 +194,12 @@ defmodule MicrocontrollerServer.Microcontroller do
     if all_changesets_valid?(changesets) do
       attrs = add_timestamps(attrs)
 
-      Ecto.Multi.new()
-      |> Ecto.Multi.insert_all(:readings, Reading, attrs)
-      |> Repo.transaction()
+      {:ok, %{readings: {_, readings}}} =
+        Ecto.Multi.new()
+        |> Ecto.Multi.insert_all(:readings, Reading, attrs, returning: true)
+        |> Repo.transaction()
+
+      {:ok, readings}
     else
       {:error, changesets}
     end

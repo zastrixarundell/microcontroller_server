@@ -121,11 +121,10 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
         |> Enum.map(&Map.take(&1, [:type, :value]))
         |> Enum.map(&Map.put(&1, :sensor_id, sensor.id))
 
-      assert {:ok, %{readings: {6, _}}} = MicrocontrollerServer.Microcontroller.create_readings(readings)
+      assert {:ok, saved_readings} = MicrocontrollerServer.Microcontroller.create_readings(readings)
 
-      reading = MicrocontrollerServer.Microcontroller.list_readings()
-
-      assert Enum.at(readings, 0).type == Enum.at(readings, 0).type
+      MicrocontrollerServer.Microcontroller.list_readings()
+      |> assert_equal_ingore_preloaded(saved_readings, :sensor)
     end
 
     test "create_readings/1 doesn't create multiple readings with incorrect data" do
@@ -218,7 +217,8 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
 
     test "list_sensors/0 returns all sensors" do
       sensor = insert(:sensor)
-      assert Microcontroller.list_sensors() |> Microcontroller.load_sensor_with_device() == [sensor]
+
+      assert_equal_ingore_preloaded(Microcontroller.list_sensors(), [sensor], :device)
     end
 
     test "list_sensors_for_device/1" do
@@ -235,7 +235,8 @@ defmodule MicrocontrollerServer.MicrocontrollerTest do
 
     test "get_sensor!/1 returns the sensor with given id" do
       sensor = insert(:sensor)
-      assert Microcontroller.get_sensor!(sensor.id) |> Microcontroller.load_sensor_with_device == sensor
+
+      assert_equal_ingore_preloaded(Microcontroller.get_sensor!(sensor.id), sensor, :device)
     end
 
     test "create_sensor/1 with valid data creates a sensor" do
