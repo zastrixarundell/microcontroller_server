@@ -31,7 +31,7 @@ The endclient would have to connect via this URL: `wss://my.subdomain/microcontr
 
 For the microcontroller to actually authenticate with the websocket connection, a custom header needs to be sent. The header in question is: `X-API-Key: api_token`. The API token is present on the authentication server and if it's correctly communicated, the authentication server will send the required information to continue with the connection.
 
-To see the exact specs of the authentication key take a look at the [documentation page](http://127.0.0.1:5500/doc/MicrocontrollerServerWeb.MicrocontrollerSocket.html#api_token_regex/1) (this is considering live-server is running on localhost:5500 and the documentation is generated).
+To see the exact specs of the authentication key take a look at the [documentation page](https://microcontroller-server.armor.quest/MicrocontrollerServerWeb.MicrocontrollerSocket.html#api_token_regex/1) (this is considering live-server is running on localhost:5500 and the documentation is generated).
 
 ### Metadata
 
