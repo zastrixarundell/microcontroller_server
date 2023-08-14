@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.30.4">
+    <meta name="project" content="MicrocontrollerServer v0.1.0">
+
+    <title>MicrocontrollerServerWeb.MicrocontrollerSocket — MicrocontrollerServer v0.1.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-HFL3S4U6.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/sidebar_items-2426F661.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/html-B3DGGEY7.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/zastrixarundell/microcontroller_server" class="sidebar-projectName" translate="no">
+MicrocontrollerServer
+      </a>
+      <div class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </div>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="icon-action display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/lib/microcontroller_server_web/channels/microcontroller_socket.ex#L1" title="View Source" class="icon-action" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">MicrocontrollerServerWeb.MicrocontrollerSocket</span> 
+  <small class="app-vsn" translate="no">(MicrocontrollerServer v0.1.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Socket for microcontrollers trying to authenticate to the server. This file handles the incoming
+connections, checks whether the API token which they are sending are valid and in case they are
+it allows the request to be handled by the correct API version of the channel.</p><p>When the client connects to the socket a message is sent to it containing the required metadata.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        Summary
+      </a>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#api_token_regex/1" translate="no">api_token_regex(api_token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Check the API token against a preset regex rule. The rule is that the API token
+must start with <code class="inline">API_TOKEN_MC_</code> and is then followed by at least <code class="inline">16</code> characters
+which can be uppercase and lowercaser letters alongside numbers.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#authenticate_token/1" translate="no">authenticate_token(api_token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Authenticate the device with the microcontroller authentication server.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#extract_api_key/1" translate="no">extract_api_key(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve the <code class="inline">x-api-key</code> header from a list of x_headers. These headers are present in
+the <code class="inline">connect_info</code> variable in the connect/3 function call.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#generate_metadata_message/1" translate="no">generate_metadata_message(socket)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Generate the metadata message for sockets. This is a message which gives the socket
+basic information about itself to be used in future API calls.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+Functions
+      </a>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="api_token_regex/1">
+
+  <div class="detail-header">
+    <a href="#api_token_regex/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">api_token_regex(api_token)</h1>
+
+      <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/lib/microcontroller_server_web/channels/microcontroller_socket.ex#L156" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> api_token_regex(api_token :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) ::
+  {:error, :invalid_token} | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+
+      </div>
+
+<p>Check the API token against a preset regex rule. The rule is that the API token
+must start with <code class="inline">API_TOKEN_MC_</code> and is then followed by at least <code class="inline">16</code> characters
+which can be uppercase and lowercaser letters alongside numbers.</p><h2 id="api_token_regex/1-examples" class="section-heading">
+  <a href="#api_token_regex/1-examples">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Examples
+  </a>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-1">(</span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="p" data-group-id="9565570814-1">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="p" data-group-id="9565570814-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-3">(</span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJ&quot;</span><span class="p" data-group-id="9565570814-3">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid_token</span><span class="p" data-group-id="9565570814-4">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-5">(</span><span class="s">&quot;oAPI_TOKEN_MC_VZGkp2vvJ&quot;</span><span class="p" data-group-id="9565570814-5">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid_token</span><span class="p" data-group-id="9565570814-6">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-7">(</span><span class="s">&quot;oAPI_TOKEN_MC_VZGkp2vvJ@&quot;</span><span class="p" data-group-id="9565570814-7">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-8">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid_token</span><span class="p" data-group-id="9565570814-8">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-9">(</span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3q@&quot;</span><span class="p" data-group-id="9565570814-9">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-10">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid_token</span><span class="p" data-group-id="9565570814-10">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">api_token_regex</span><span class="p" data-group-id="9565570814-11">(</span><span class="no">nil</span><span class="p" data-group-id="9565570814-11">)</span><span class="w">
+</span><span class="p" data-group-id="9565570814-12">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:invalid_token</span><span class="p" data-group-id="9565570814-12">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="authenticate_token/1">
+
+  <div class="detail-header">
+    <a href="#authenticate_token/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">authenticate_token(api_token)</h1>
+
+      <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/lib/microcontroller_server_web/channels/microcontroller_socket.ex#L186" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> authenticate_token(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()} | {:error, :failed_authentication}</pre>
+
+      </div>
+
+<p>Authenticate the device with the microcontroller authentication server.</p><p>The function returns the following if successful:</p><ul><li><code class="inline">:ok</code></li><li><code class="inline">user_id</code></li><li><code class="inline">location_id</code></li><li><code class="inline">controller_id</code></li></ul><h2 id="authenticate_token/1-examples" class="section-heading">
+  <a href="#authenticate_token/1-examples">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Examples
+  </a>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">authenticate_token</span><span class="p" data-group-id="2205965421-1">(</span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="p" data-group-id="2205965421-1">)</span><span class="w">
+</span><span class="p" data-group-id="2205965421-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="2205965421-2">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">authenticate_token</span><span class="p" data-group-id="2205965421-3">(</span><span class="s">&quot;API_TOKEN_MC_INVALIDTOKENTEST&quot;</span><span class="p" data-group-id="2205965421-3">)</span><span class="w">
+</span><span class="p" data-group-id="2205965421-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:failed_authentication</span><span class="p" data-group-id="2205965421-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="extract_api_key/1">
+
+  <div class="detail-header">
+    <a href="#extract_api_key/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">extract_api_key(arg1)</h1>
+
+      <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/lib/microcontroller_server_web/channels/microcontroller_socket.ex#L127" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> extract_api_key(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | {<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>Retrieve the <code class="inline">x-api-key</code> header from a list of x_headers. These headers are present in
+the <code class="inline">connect_info</code> variable in the connect/3 function call.</p><h2 id="extract_api_key/1-examples" class="section-heading">
+  <a href="#extract_api_key/1-examples">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Examples
+  </a>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">extract_api_key</span><span class="p" data-group-id="5722745742-1">(</span><span class="p" data-group-id="5722745742-2">{</span><span class="s">&quot;x-api-key&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="p" data-group-id="5722745742-2">}</span><span class="p" data-group-id="5722745742-1">)</span><span class="w">
+</span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">extract_api_key</span><span class="p" data-group-id="5722745742-3">(</span><span class="p" data-group-id="5722745742-4">{</span><span class="s">&quot;x-api-key1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;API_TOKEN_MC_VZGkp2vvJJjHj3qZ&quot;</span><span class="p" data-group-id="5722745742-4">}</span><span class="p" data-group-id="5722745742-3">)</span><span class="w">
+</span><span class="no">nil</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="generate_metadata_message/1">
+
+  <div class="detail-header">
+    <a href="#generate_metadata_message/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">generate_metadata_message(socket)</h1>
+
+      <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/lib/microcontroller_server_web/channels/microcontroller_socket.ex#L88" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> generate_metadata_message(socket :: <a href="https://hexdocs.pm/phoenix/1.7.7/Phoenix.Socket.html#t:t/0">Phoenix.Socket.t</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | :error</pre>
+
+      </div>
+
+<p>Generate the metadata message for sockets. This is a message which gives the socket
+basic information about itself to be used in future API calls.</p><h2 id="generate_metadata_message/1-examples" class="section-heading">
+  <a href="#generate_metadata_message/1-examples">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Examples
+  </a>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">generate_metadata_message</span><span class="p" data-group-id="9937773332-1">(</span><span class="p" data-group-id="9937773332-2">%</span><span class="nc" data-group-id="9937773332-2">Phoenix.Socket</span><span class="p" data-group-id="9937773332-2">{</span><span class="ss">assigns</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9937773332-3">%{</span><span class="ss">device</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9937773332-4">%</span><span class="nc" data-group-id="9937773332-4">MicrocontrollerServer.Microcontroller.Device</span><span class="p" data-group-id="9937773332-4">{</span><span class="ss">location_id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">user_id</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">controller_id</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="9937773332-4">}</span><span class="p" data-group-id="9937773332-3">}</span><span class="p" data-group-id="9937773332-2">}</span><span class="p" data-group-id="9937773332-1">)</span><span class="w">
+</span><span class="p" data-group-id="9937773332-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9937773332-6">%{</span><span class="ss">ref</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">payload</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9937773332-7">%{</span><span class="ss">controller_id</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="ss">user_id</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">location_id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="9937773332-7">}</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">join_ref</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w"> </span><span class="ss">event</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;metadata&quot;</span><span class="p" data-group-id="9937773332-6">}</span><span class="p" data-group-id="9937773332-5">}</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">generate_metadata_message</span><span class="p" data-group-id="9937773332-8">(</span><span class="p" data-group-id="9937773332-9">%</span><span class="nc" data-group-id="9937773332-9">Phoenix.Socket</span><span class="p" data-group-id="9937773332-9">{</span><span class="p" data-group-id="9937773332-9">}</span><span class="p" data-group-id="9937773332-8">)</span><span class="w">
+</span><span class="ss">:error</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+        <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+              <a href="MicrocontrollerServer.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

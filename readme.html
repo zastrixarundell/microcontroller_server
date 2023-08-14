@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.30.4">
+    <meta name="project" content="MicrocontrollerServer v0.1.0">
+
+    <title>MicrocontrollerServer — MicrocontrollerServer v0.1.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-HFL3S4U6.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/sidebar_items-2426F661.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/html-B3DGGEY7.js"></script>
+
+
+  </head>
+  <body data-type="extras" class="page-extra">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/zastrixarundell/microcontroller_server" class="sidebar-projectName" translate="no">
+MicrocontrollerServer
+      </a>
+      <div class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </div>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="icon-action display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/README.md#L1" title="View Source" class="icon-action" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+
+  <span>MicrocontrollerServer</span>
+</h1>
+
+<blockquote><p>Elixir phoenix based microservice application to control and communicate with microcontrollers.</p></blockquote><p><img src="https://github.com/zastrixarundell/microcontroller_server/workflows/Elixir%20CI/badge.svg" alt="CI/CD"/> <a href="https://microcontroller-server.armor.quest"><img src="https://img.shields.io/badge/documentation-gray" alt="Static Badge"/></a></p><h2 id="contents" class="section-heading">
+  <a href="#contents">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Contents
+  </a>
+</h2>
+<ul><li><a href="#detailed-explanation">Detailed explanation</a></li><li><a href="#setting-up">Setting up</a><ul><li><a href="#development">Development</a><ul><li><a href="#todo-devcontainer-integration">TODO: Devcontainer integration</a></li><li><a href="#asdf-installation">asdf installation</a></li></ul></li><li><a href="#production">Production</a></li><li><a href="#background-tools">Background tools</a></li><li><a href="#environment-variables">Environment variables</a></li></ul></li><li><a href="#running-the-server">Running the server</a></li><li><a href="#clients">Clients</a></li><li><a href="#learn-more">Learn more</a></li></ul><h2 id="detailed-explanation" class="section-heading">
+  <a href="#detailed-explanation">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Detailed explanation
+  </a>
+</h2>
+<p>This is a microservice which uses websockets to communicate with ESP8266/ESP32 based microcontrollers to read data, controls servos, etc.</p><p>The intent of this application is to have 100% test coverage so TDD is preffered.</p><h2 id="setting-up" class="section-heading">
+  <a href="#setting-up">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Setting up
+  </a>
+</h2>
+<h3 id="development" class="section-heading">
+  <a href="#development">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Development
+  </a>
+</h3>
+<p>The preffered way is to use asdf to have full control of the system but devcontainers are also a valid way of running the application in a scenario where an usual development machine can not be accessed.</p><h4>TODO: Devcontainer integration</h4><h4>asdf installation</h4><p>The current preffered way to setup the environment is to use <a href="https://asdf-vm.com">asdf</a>. </p><p>To start with the installation please follow the <a href="https://asdf-vm.com/guide/getting-started.html">asdf installation instructions</a>.</p><p>After that the required plugins need to be added:</p><pre><code class="makeup bash" translate="no"><span class="">asdf plugin add elixir
+</span><span class="">asdf plugin add erlang
+</span><span class="">asdf plugin add vars https://github.com/excid3/asdf-vars
+</span></code></pre><p>After installing the required plugins go to the following file: <code class="inline">~/.asdf/lib/commands/command-exec.bash</code> and find the line:</p><pre><code class="makeup bash" translate="no"><span class="">with_shim_executable &quot;$shim_name&quot; exec_shim || exit $?
+</span></code></pre><p>After that, add a new line before it:</p><pre><code class="makeup bash" translate="no"><span class="">eval &quot;$($ASDF_DIR/bin/asdf vars)&quot;
+</span></code></pre><p>And then the final result should look like:</p><pre><code class="makeup bash" translate="no"><span class="">eval &quot;$($ASDF_DIR/bin/asdf vars)&quot;
+</span><span class="">with_shim_executable &quot;$shim_name&quot; exec_shim || exit $?
+</span></code></pre><p>Once that step is complete, create a file named <code class="inline">.asdf-vars</code>, this file will contain all of the environment varulables required by the project.</p><p>After that step, the final step is to install Elixir and Erlang:</p><pre><code class="makeup elixir" translate="no"><span class="n">asdf</span><span class="w"> </span><span class="n">install</span></code></pre><h3 id="production" class="section-heading">
+  <a href="#production">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Production
+  </a>
+</h3>
+<p>Currently the settings for production are the same as for <a href="#development">development</a>.</p><h3 id="background-tools" class="section-heading">
+  <a href="#background-tools">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Background tools
+  </a>
+</h3>
+<p>If the application is ran with asdf, then either <code class="inline">podman</code> or <code class="inline">docker</code> need to be installed. In case <code class="inline">podman</code> and <code class="inline">podman-compose</code> are installed, you would need to run <code class="inline">podman-compose up -d</code>.</p><h3 id="environment-variables" class="section-heading">
+  <a href="#environment-variables">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Environment variables
+  </a>
+</h3>
+<table><thead><tr><th style="text-align: left;">Variable name</th><th style="text-align: left;">Type</th><th style="text-align: left;">Example</th><th style="text-align: left;">Definition</th><th style="text-align: left;">Optional</th></tr></thead><tbody></tbody></table><p>|MICROCONTROLLER_AUTH_SERVER|String|<a href="http://localhost:5000%7CURL">http://localhost:5000|URL</a> of the auth server.|No</p><h2 id="running-the-server" class="section-heading">
+  <a href="#running-the-server">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Running the server
+  </a>
+</h2>
+<p>To start your Phoenix server:</p><ul><li>Run <code class="inline">mix setup</code> to install and setup dependencies</li><li>Start Phoenix endpoint with <a href="https://hexdocs.pm/phoenix/1.7.7/Mix.Tasks.Phx.Server.html"><code class="inline">mix phx.server</code></a> or inside IEx with <code class="inline">iex -S mix phx.server</code></li></ul><p>Now you can visit <a href="http://localhost:4000"><code class="inline">localhost:4000</code></a> from your browser.</p><p>Ready to run in production? Please <a href="https://hexdocs.pm/phoenix/deployment.html">check our deployment guides</a>.</p><h2 id="clients" class="section-heading">
+  <a href="#clients">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Clients
+  </a>
+</h2>
+<p>General documentation for client. Because of the sheer amount of connections/call, specific files are created for each each scenario. Potentially in a CI/CD environment the documentation for the API will be generated and hosted in a better way.</p><ul><li><a href="microcontroller_socket.html">Microcontroller as client</a></li></ul><h2 id="learn-more" class="section-heading">
+  <a href="#learn-more">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Learn more
+  </a>
+</h2>
+<ul><li>Official website: <a href="https://www.phoenixframework.org/">https://www.phoenixframework.org/</a></li><li>Guides: <a href="https://hexdocs.pm/phoenix/overview.html">https://hexdocs.pm/phoenix/overview.html</a></li><li>Docs: <a href="https://hexdocs.pm/phoenix">https://hexdocs.pm/phoenix</a></li><li>Forum: <a href="https://elixirforum.com/c/phoenix-forum">https://elixirforum.com/c/phoenix-forum</a></li><li>Source: <a href="https://github.com/phoenixframework/phoenix">https://github.com/phoenixframework/phoenix</a></li></ul>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="api-reference.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+API Reference
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="microcontroller_socket.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Microcontroller Socket
+        </span>
+      </a>
+
+  </div>
+</div>
+      <footer class="footer">
+        <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+              <a href="MicrocontrollerServer.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

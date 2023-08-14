@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.30.4">
+    <meta name="project" content="MicrocontrollerServer v0.1.0">
+
+    <title>Microcontroller Socket — MicrocontrollerServer v0.1.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-HFL3S4U6.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-NBND3S2D.js"></script>
+    <script src="dist/sidebar_items-2426F661.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/html-B3DGGEY7.js"></script>
+
+
+  </head>
+  <body data-type="extras" class="page-extra">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/zastrixarundell/microcontroller_server" class="sidebar-projectName" translate="no">
+MicrocontrollerServer
+      </a>
+      <div class="sidebar-projectVersion" translate="no">
+        v0.1.0
+      </div>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="icon-action display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/zastrixarundell/microcontroller_server/blob/main/MICROCONTROLLER_SOCKET.md#L1" title="View Source" class="icon-action" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+
+  <span>Microcontroller Socket</span>
+</h1>
+
+<p>This is a documentation file for the basics of using a microcontroller to connect to the server.</p><h2 id="prerequisites" class="section-heading">
+  <a href="#prerequisites">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Prerequisites
+  </a>
+</h2>
+<p>To run this an auth server for microcontrollers needs to be started. In the development environment this can be via running the <a href="bin/mock-server.py">python mock server script</a>.</p><p>After running <code class="inline">python bin/mock-server.py</code> a mock server running on <code class="inline">http://127.0.0.1:5000</code> will be started. This gives basic information mostly made for a singular device currently.</p><p>Make sure that the environment variable for the auth server is set to the correct mock address if this is the way it's being used.</p><h2 id="connecting-to-the-server" class="section-heading">
+  <a href="#connecting-to-the-server">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Connecting to the server
+  </a>
+</h2>
+<h3 id="url-for-the-endpoint" class="section-heading">
+  <a href="#url-for-the-endpoint">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    URL for the endpoint
+  </a>
+</h3>
+<p>The microcontrollers are communicating with the servers via websockets. The path for the microcontroller endpoint is: <code class="inline">/microcontrollers/websocket</code>.</p><p>Given the following <a href="https://caddyserver.com/">Caddy</a> (a proxy server) configuration:</p><pre><code class="caddy">my.subdomain {
+        encode gzip
+        reverse_proxy 127.0.0.1:4000
+}</code></pre><p>The endclient would have to connect via this URL: <code class="inline">wss://my.subdomain/microcontrollers/websocket</code>. Note, while not using SSL the URI would start with <code class="inline">ws://</code>.</p><h3 id="authentication" class="section-heading">
+  <a href="#authentication">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Authentication
+  </a>
+</h3>
+<p>For the microcontroller to actually authenticate with the websocket connection, a custom header needs to be sent. The header in question is: <code class="inline">X-API-Key: api_token</code>. The API token is present on the authentication server and if it's correctly communicated, the authentication server will send the required information to continue with the connection.</p><p>To see the exact specs of the authentication key take a look at the <a href="https://microcontroller-server.armor.quest/MicrocontrollerServerWeb.MicrocontrollerSocket.html#api_token_regex/1">documentation page</a>.</p><h3 id="metadata" class="section-heading">
+  <a href="#metadata">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Metadata
+  </a>
+</h3>
+<p>When the device authenticates and connects to the server, a message is sent to it on the connect event. The message in question is:</p><pre><code class="json">{
+    &quot;ref&quot;: null,
+    &quot;payload&quot;: {
+        &quot;user_id&quot;: 1,
+        &quot;location_id&quot;: 2,
+        &quot;controller_id&quot;: 3
+    },
+    &quot;topic&quot;: &quot;microcontroller:3&quot;,
+    &quot;event&quot;: &quot;metadata&quot;,
+    &quot;join_ref&quot;: null
+}</code></pre><h2 id="communication-with-phoenix" class="section-heading">
+  <a href="#communication-with-phoenix">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Communication with Phoenix
+  </a>
+</h2>
+<p>While official documentation doesn't exist as to how to communicate with Phoenix when not using a JavaScript library there is, thankfully, this <a href="https://web.archive.org/web/20230530183618/http://graemehill.ca/websocket-clients-and-phoenix-channels/">blogpost about it</a>.</p><h3 id="heartbeats" class="section-heading">
+  <a href="#heartbeats">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    Heartbeats
+  </a>
+</h3>
+<p>In a nutshell the websocket needs to send a message to the Phoenix server every minute. This message should take have this format:</p><pre><code class="json">{
+  &quot;topic&quot;: &quot;phoenix&quot;,
+  &quot;event&quot;: &quot;heartbeat&quot;,
+  &quot;payload&quot;: {},
+  &quot;ref&quot;: 0
+}</code></pre><ul><li><code class="inline">topic</code>: Usually this is the room the event relates to.</li><li><code class="inline">event</code>: This defines which handler will get invoked on the server side (or potentially client-side if going the other direction). There are some built-in events mostly prefixed with phx_.</li><li><code class="inline">payload</code>: The actual data associated with the event. For some events (like phx_join) the payload is ignored.</li><li><code class="inline">ref</code>: Just an idenfifier for the message. When you get back a reply it will have the same ref value as the event that it is replying to. Since channels are asynchronous you could quickly send two events before receiving a reply and you would need to use ref to know which event it relates to. In my examples I have hard coded ref to 0 but in reality you probably want a counter and some helper function to get the next reference number (or use a uuid).<code class="inline"></code></li></ul><h3 id="v1-api" class="section-heading">
+  <a href="#v1-api">
+    <i class="ri-link-m" aria-hidden="true"></i>
+    V1 API
+  </a>
+</h3>
+<h4>Joining</h4><p>To join the rquired microcontroller channel for the <code class="inline">v1</code> version of the API, the following data needs to be sent to the server:</p><pre><code class="json">{
+  &quot;topic&quot;: &quot;microcontroller:v1:$controller_id&quot;,
+  &quot;event&quot;: &quot;phx_join&quot;,
+  &quot;payload&quot;: {},
+  &quot;ref&quot;: 0,
+  &quot;join_ref&quot;: 0
+}</code></pre><h4>Sending reading information</h4><p>After the controller has joined the channel, it can send its' reading information in the following format:</p><pre><code class="json">{
+  &quot;topic&quot;: &quot;microcontroller:v1:$controller_id&quot;,
+  &quot;event&quot;: &quot;upload_readings&quot;,
+  &quot;payload&quot;: {
+    &quot;$sensor-id&quot;: [
+      {
+        &quot;type&quot;: &quot;$reading_type&quot;,
+        &quot;value&quot;: &quot;$value&quot;
+      },
+      {
+        &quot;type&quot;: &quot;$reading_type&quot;,
+        &quot;value&quot;: &quot;$value&quot;
+      }
+    ]
+  },
+  &quot;ref&quot;: 0,
+  &quot;join_ref&quot;: 0
+}</code></pre><h4>Motor controls</h4><p>To receive informations as to how to control a motor the following inforamtion needs to be intercepted:</p><pre><code class="json">{
+  &quot;topic&quot;: &quot;microcontroller:v1:$controller_id&quot;,
+  &quot;event&quot;: &quot;control_update&quot;,
+  &quot;payload&quot;: {
+    &quot;control&quot;: [
+      {
+        &quot;$control_id&quot;: $control_value
+      }
+    ]
+  }
+}</code></pre>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="readme.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+MicrocontrollerServer
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+  </div>
+</div>
+      <footer class="footer">
+        <p>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+              <a href="MicrocontrollerServer.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.30.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
